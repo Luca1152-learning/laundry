@@ -1,0 +1,5 @@
+.idea/
+cmake-build-debug/
+
+# MacOS temporary file
+.DS_Store
