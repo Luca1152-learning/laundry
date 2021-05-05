@@ -5,8 +5,9 @@
 
 class WashingMachine : public Machine {
 public:
-    explicit WashingMachine(double weightCapacity, bool canWashHeavyClothes = false) :
-            m_weightCapacity(weightCapacity), m_canWashHeavyClothes(canWashHeavyClothes) {
+    explicit WashingMachine(double weightCapacity, double cycleCompletionDuration, bool canWashHeavyClothes = false)
+            : Machine(cycleCompletionDuration), m_weightCapacity(weightCapacity),
+              m_canWashHeavyClothes(canWashHeavyClothes) {
     }
 
 private:

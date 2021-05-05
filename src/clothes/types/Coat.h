@@ -6,13 +6,13 @@
 
 class Coat : public Clothing, public Washable {
 public:
-    Coat(double weight, bool hasDarkColor)
+    explicit Coat(double weight, bool hasDarkColor)
             : Clothing(weight, hasDarkColor, true), Washable(false, false) {
     }
 
     double getNecessaryDetergentQuantity() const override {
-        // As per the requirements
-        return 100;
+        // 100g/kg As per the requirements
+        return 100 * getWeight();
     }
 };
 

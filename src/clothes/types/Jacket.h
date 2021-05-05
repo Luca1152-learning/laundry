@@ -7,13 +7,18 @@
 // Sacou
 class Jacket : public Clothing, public Washable {
 public:
-    Jacket(double weight, bool hasDarkColor)
+    explicit Jacket(double weight, bool hasDarkColor)
             : Clothing(weight, hasDarkColor, true), Washable(false, false) {
     }
 
     double getNecessaryDetergentQuantity() const override {
-        // As per the requirements
-        return 100;
+        // 100g/kg, as per the requirements
+        return 100 * getWeight();
+    }
+
+    double getNecessaryIroningTime() const override {
+        // 90s/kg, as per the requirements
+        return 150 * getWeight();
     }
 };
 
