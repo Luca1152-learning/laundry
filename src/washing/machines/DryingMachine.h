@@ -1,0 +1,7 @@
+#ifndef LAUNDRY_DRYINGMACHINE_H
+#define LAUNDRY_DRYINGMACHINE_H
+
+class DryingMachine {
+};
+
+#endif //LAUNDRY_DRYINGMACHINE_H

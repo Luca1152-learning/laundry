@@ -1,8 +1,8 @@
-#include <iostream>
+#include "MainLoop.h"
 
 using namespace std;
 
 int main() {
-    cout << "Hello, world!";
+    MainLoop().run();
     return 0;
 }
