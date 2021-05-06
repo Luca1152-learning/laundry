@@ -5,7 +5,6 @@
 #include <map>
 #include "Laundry.h"
 #include "utils/IOUtils.h"
-#include "utils/MapUtils.h"
 
 using namespace std;
 
@@ -19,25 +18,21 @@ private:
     Laundry m_laundry;
 
     bool promptCommand() {
-        map<string, int> choices = {
-                {"Add client",   1},
-                {"Exit program", 2}
-        };
         int commandChoice = IOUtils::promptNumberedChoice(
                 "Operation to perform",
-                MapUtils::getKeys(choices)
+                {"Add client", "Exit program"}
         );
 
-        if (commandChoice == choices["Add client"]) {
+        if (commandChoice == 1) {
             cout << "\n";
-            Client client = m_laundry.createClient();
+            Client client;
             while (promptClientOrder(client));
             cout << "\n";
 
             m_laundry.addClient(client);
 
             return true;
-        } else if (commandChoice == choices["Exit program"]) {
+        } else if (commandChoice == 2) {
             return false;
         } else {
             throw runtime_error("This command choice isn't being handled.");
@@ -46,19 +41,15 @@ private:
 
     static bool promptClientOrder(Client &client) {
         cout << "[Client #" << client.getId() << "]\n";
-        map<string, int> choices = {
-                {"Add clothing item(s)", 1},
-                {"Exit order",           2}
-        };
         int commandChoice = IOUtils::promptNumberedChoice(
                 "Operation to perform",
-                MapUtils::getKeys(choices)
+                {"Add clothing item(s)", "Exit order"}
         );
 
-        if (commandChoice == choices["Add clothing item(s)"]) {
+        if (commandChoice == 1) {
             promptAddClothingItemToClient(client);
             return true;
-        } else if (commandChoice == choices["Exit order"]) {
+        } else if (commandChoice == 2) {
             return false;
         } else {
             throw runtime_error("This command choice isn't being handled.");
@@ -81,28 +72,19 @@ private:
     }
 
     static ClothingType promptClothingType() {
-        map<string, int> choices = {
-                {"Coat",        1},
-                {"Costume",     2},
-                {"Dress",       3},
-                {"Jacket",      4},
-                {"Pants",       5},
-                {"Shirt",       6},
-                {"Windbreaker", 7}
-        };
         cout << "\n";
         int clothingChoice = IOUtils::promptNumberedChoice(
                 "Clothing type to add",
-                MapUtils::getKeys(choices)
+                {"Coat", "Costume", "Dress", "Jacket", "Pants", "Shirt", "Windbreaker"}
         );
 
-        if (clothingChoice == choices["Coat"]) return ClothingType::COAT;
-        else if (clothingChoice == choices["Costume"]) return ClothingType::COSTUME;
-        else if (clothingChoice == choices["Dress"]) return ClothingType::DRESS;
-        else if (clothingChoice == choices["Jacket"]) return ClothingType::JACKET;
-        else if (clothingChoice == choices["Pants"]) return ClothingType::PANTS;
-        else if (clothingChoice == choices["Shirt"]) return ClothingType::SHIRT;
-        else if (clothingChoice == choices["Windbreaker"]) return ClothingType::WINDBREAKER;
+        if (clothingChoice == 1) return ClothingType::COAT;
+        else if (clothingChoice == 2) return ClothingType::COSTUME;
+        else if (clothingChoice == 3) return ClothingType::DRESS;
+        else if (clothingChoice == 4) return ClothingType::JACKET;
+        else if (clothingChoice == 5) return ClothingType::PANTS;
+        else if (clothingChoice == 6) return ClothingType::SHIRT;
+        else if (clothingChoice == 7) return ClothingType::WINDBREAKER;
         else throw runtime_error("This clothing type isn't being handled.");
     }
 
@@ -124,22 +106,18 @@ private:
     }
 
     static pair<double, double> promptWashingTemperatureRange(int itemsCount) {
-        map<string, int, greater<>> choices = {
-                {"A minimum washing temperature", 1},
-                {"A maximum washing temperature", 2},
-        };
         cout << "\n";
         int rangeChoice = IOUtils::promptNumberedChoice(
                 (itemsCount == 1) ? "The item requires" : "The items require",
-                MapUtils::getKeys(choices)
+                {"A minimum washing temperature", "A maximum washing temperature"}
         );
         cout << "\n";
 
         double minTemp = Washable::MIN_WASHING_TEMPERATURE, maxTemp = Washable::MAX_WASHING_TEMPERATURE;
-        if (rangeChoice == choices["A minimum washing temperature"]) {
+        if (rangeChoice == 1) {
             minTemp = IOUtils::promptNumber("Minimum washing temperature:",
                                             Washable::MIN_WASHING_TEMPERATURE, Washable::MAX_WASHING_TEMPERATURE);
-        } else if (rangeChoice == choices["A maximum washing temperature"]) {
+        } else if (rangeChoice == 2) {
             maxTemp = IOUtils::promptNumber("Maximum washing temperature",
                                             Washable::MIN_WASHING_TEMPERATURE, Washable::MAX_WASHING_TEMPERATURE);
         } else {

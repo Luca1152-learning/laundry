@@ -18,10 +18,6 @@ using namespace std;
 
 class Laundry {
 public:
-    Client createClient() {
-        return Client(++m_latestClientId);
-    }
-
     void addClient(const Client &client) {
         m_clients.push_back(client);
     }

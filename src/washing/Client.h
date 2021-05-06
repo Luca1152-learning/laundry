@@ -10,7 +10,7 @@ using namespace std;
 
 class Client {
 public:
-    explicit Client(int id) : m_id(id) {}
+    explicit Client() : m_id(++lastId) {}
 
     int getId() const {
         return m_id;
@@ -41,6 +41,7 @@ public:
 
 private:
     const int m_id;
+    static int lastId;
     vector<Washable *> m_clothes;
 };
 
