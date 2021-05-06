@@ -20,8 +20,32 @@ private:
 
     bool promptCommand() {
         map<string, int> choices = {
+                {"Add client",   1},
+                {"Exit program", 2}
+        };
+        int commandChoice = IOUtils::promptNumberedChoice(
+                "Operation to perform",
+                MapUtils::getKeys(choices)
+        );
+
+        if (commandChoice == choices["Add client"]) {
+            cout << "\n";
+            Client client = m_laundry.createClient();
+            while (promptClientOrder(client));
+            m_laundry.addClient(client);
+            return true;
+        } else if (commandChoice == choices["Exit program"]) {
+            return false;
+        } else {
+            throw runtime_error("This command choice isn't being handled.");
+        }
+    }
+
+    static bool promptClientOrder(Client &client) {
+        cout << "[Client #" << client.getId() << "]\n";
+        map<string, int> choices = {
                 {"Add clothing item(s)", 1},
-                {"Exit",                 2}
+                {"Exit order",           2}
         };
         int commandChoice = IOUtils::promptNumberedChoice(
                 "Operation to perform",
@@ -29,22 +53,22 @@ private:
         );
 
         if (commandChoice == choices["Add clothing item(s)"]) {
-            promptAddClothingItem();
+            promptAddClothingItemToClient(client);
             return true;
-        } else if (commandChoice == choices["Exit"]) {
+        } else if (commandChoice == choices["Exit order"]) {
             return false;
         } else {
             throw runtime_error("This command choice isn't being handled.");
         }
     }
 
-    void promptAddClothingItem() {
-        auto clothingType = promptClothingType();
+    static void promptAddClothingItemToClient(Client &client) {
+        ClothingType clothingType = promptClothingType();
         cout << "\n";
-        auto itemsCount = promptItemsCount();
-        auto weight = promptWeight(itemsCount);
-        auto hasDarkColor = promptHasDarkColor(itemsCount);
-        addClothingItemsToLaundry(clothingType, itemsCount, weight, hasDarkColor);
+        int itemsCount = promptItemsCount();
+        double weight = promptWeight(itemsCount);
+        bool hasDarkColor = promptHasDarkColor(itemsCount);
+        client.addClothingItems(clothingType, weight, hasDarkColor, itemsCount);
         cout << "\n";
     }
 
@@ -80,7 +104,7 @@ private:
 
     static double promptWeight(int itemsCount) {
         return IOUtils::promptNumber(
-                (itemsCount == 1) ? "The item's weight" : "Each item's individual weight",
+                (itemsCount == 1) ? "The item's weight in kg" : "Each item's individual weight in kg",
                 0.01
         );
     }
@@ -89,12 +113,6 @@ private:
         return IOUtils::promptYesNo(
                 (itemsCount == 1) ? "The item has a dark color" : "The items have a dark color"
         );
-    }
-
-    void addClothingItemsToLaundry(ClothingType clothingType, int itemsCount, double weight, bool hasDarkColor) {
-        for (int i = 0; i < itemsCount; i++) {
-            m_laundry.addClothingItemToWash(clothingType, weight, hasDarkColor);
-        }
     }
 };
 

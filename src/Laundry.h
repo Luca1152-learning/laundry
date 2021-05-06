@@ -12,30 +12,24 @@
 #include "clothes/types/Pants.h"
 #include "clothes/types/Shirt.h"
 #include "clothes/types/Windbreaker.h"
+#include "washing/Client.h"
 
 using namespace std;
 
 class Laundry {
 public:
-    void addClothingItemToWash(ClothingType clothingType, double weight, bool hasDarkColor) {
-        m_clothesToWash.push_back(makeClothingItem(clothingType, weight, hasDarkColor));
+    Client createClient() {
+        return Client(++m_latestClientId);
+    }
+
+    void addClient(const Client &client) {
+        m_clients.push_back(client);
     }
 
 private:
     vector<const Washable *> m_clothesToWash, m_clothesToWring, m_clothesToDry, m_clothesToIron, m_clothesCleaned;
-
-    static Washable *makeClothingItem(ClothingType clothingType, double weight, bool hasDarkColor) {
-        switch (clothingType) {
-            case ClothingType::COAT: return new Coat(weight, hasDarkColor);
-            case ClothingType::COSTUME:
-                return new Costume(weight, hasDarkColor, weight, hasDarkColor, weight, hasDarkColor);
-            case ClothingType::DRESS: return new Dress(weight, hasDarkColor);
-            case ClothingType::JACKET: return new Jacket(weight, hasDarkColor);
-            case ClothingType::PANTS: return new Pants(weight, hasDarkColor);
-            case ClothingType::SHIRT: return new Shirt(weight, hasDarkColor);
-            case ClothingType::WINDBREAKER: return new Windbreaker(weight, hasDarkColor);
-        }
-    }
+    vector<Client> m_clients;
+    int m_latestClientId = 0;
 };
 
 #endif //LAUNDRY_LAUNDRY_H
