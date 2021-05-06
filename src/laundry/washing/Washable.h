@@ -2,6 +2,7 @@
 #define LAUNDRY_WASHABLE_H
 
 #include <stdexcept>
+#include "WashingHistory.h"
 
 using namespace std;
 
@@ -27,9 +28,18 @@ public:
         throw runtime_error("This clothing type can't be ironed.");
     };
 
+    void addHistoryEvent(const string &historyEvent) {
+        m_history.addHistoryEvent(historyEvent);
+    }
+
+    void printHistory() {
+        m_history.printHistory();
+    }
+
     virtual ~Washable() = default;
 
 private:
+    WashingHistory m_history;
     const double m_minWashingTemperature, m_maxWashingTemperature;
     const bool m_mustBeWringed, m_mustBeIroned;
 };

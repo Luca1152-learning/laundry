@@ -2,7 +2,7 @@
 #define LAUNDRY_COSTUME_H
 
 #include "../../Clothing.h"
-#include "../../../washing/Washable.h"
+#include "../../../laundry/washing/Washable.h"
 #include "../Pants.h"
 #include "../Shirt.h"
 #include "../Jacket.h"

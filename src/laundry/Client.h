@@ -2,7 +2,7 @@
 #define LAUNDRY_CLIENT_H
 
 #include <vector>
-#include "Washable.h"
+#include "washing/Washable.h"
 #include "../clothes/types/ClothingType.h"
 #include "../utils/WashableUtils.h"
 

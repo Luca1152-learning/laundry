@@ -2,7 +2,7 @@
 #define LAUNDRY_DRESS_H
 
 #include "../Clothing.h"
-#include "../../washing/Washable.h"
+#include "../../laundry/washing/Washable.h"
 
 class Dress : public Clothing, public Washable {
 public:

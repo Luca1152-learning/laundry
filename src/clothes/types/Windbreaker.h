@@ -2,7 +2,7 @@
 #define LAUNDRY_WINDBREAKER_H
 
 #include "../Clothing.h"
-#include "../../washing/Washable.h"
+#include "../../laundry/washing/Washable.h"
 
 // Geacă
 class Windbreaker : public Clothing, public Washable {

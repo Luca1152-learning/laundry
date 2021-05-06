@@ -1,7 +1,7 @@
 #ifndef LAUNDRY_WASHABLEUTILS_H
 #define LAUNDRY_WASHABLEUTILS_H
 
-#include "../washing/Washable.h"
+#include "../laundry/washing/Washable.h"
 #include "../clothes/types/ClothingType.h"
 #include "../clothes/types/Coat.h"
 #include "../clothes/types/composite/Costume.h"

@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <map>
-#include "Laundry.h"
+#include "laundry/Laundry.h"
 #include "utils/IOUtils.h"
 
 using namespace std;
@@ -30,6 +30,7 @@ private:
             cout << "\n";
 
             m_laundry.addClient(client);
+            m_laundry.runMachines(false);
 
             return true;
         } else if (commandChoice == 2) {
