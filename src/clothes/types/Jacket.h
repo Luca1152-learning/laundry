@@ -7,8 +7,9 @@
 // Sacou
 class Jacket : public Clothing, public Washable {
 public:
-    explicit Jacket(double weight, bool hasDarkColor)
-            : Clothing(weight, hasDarkColor, true), Washable(false, false) {
+    explicit Jacket(double weight, bool hasDarkColor, double minWashingTemperature, double maxWashingTemperature)
+            : Clothing(weight, hasDarkColor, true),
+              Washable(minWashingTemperature, maxWashingTemperature, false, false) {
     }
 
     double getNecessaryDetergentQuantity() const override {

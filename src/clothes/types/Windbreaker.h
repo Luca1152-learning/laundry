@@ -7,7 +7,9 @@
 // Geacă
 class Windbreaker : public Clothing, public Washable {
 public:
-    explicit Windbreaker(double weight, bool hasDarkColor) : Clothing(weight, hasDarkColor, true) {
+    explicit Windbreaker(double weight, bool hasDarkColor, double minWashingTemperature, double maxWashingTemperature)
+            : Clothing(weight, hasDarkColor, true),
+              Washable(minWashingTemperature, maxWashingTemperature) {
     }
 
     double getNecessaryDetergentQuantity() const override {

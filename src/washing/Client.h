@@ -16,13 +16,22 @@ public:
         return m_id;
     }
 
-    void addClothingItem(ClothingType clothingType, double weight, bool hasDarkColor) {
-        m_clothes.push_back(WashableUtils::makeClothingItem(clothingType, weight, hasDarkColor));
+    void addClothingItem(
+            ClothingType clothingType, double weight, bool hasDarkColor,
+            double minWashingTemperature, double maxWashingTemperature
+    ) {
+        m_clothes.push_back(WashableUtils::makeClothingItem(
+                clothingType, weight, hasDarkColor, minWashingTemperature, maxWashingTemperature
+        ));
     }
 
-    void addClothingItems(ClothingType clothingType, double weight, bool hasDarkColor, int itemsCount) {
+    void addClothingItems(
+            ClothingType clothingType, double weight, bool hasDarkColor,
+            double minWashingTemperature, double maxWashingTemperature,
+            int itemsCount
+    ) {
         for (int i = 0; i < itemsCount; i++) {
-            addClothingItem(clothingType, weight, hasDarkColor);
+            addClothingItem(clothingType, weight, hasDarkColor, minWashingTemperature, maxWashingTemperature);
         }
     }
 

@@ -6,7 +6,9 @@
 
 class Shirt : public Clothing, public Washable {
 public:
-    explicit Shirt(double weight, bool hasDarkColor) : Clothing(weight, hasDarkColor, false) {}
+    explicit Shirt(double weight, bool hasDarkColor, double minWashingTemperature, double maxWashingTemperature)
+            : Clothing(weight, hasDarkColor, false),
+              Washable(minWashingTemperature, maxWashingTemperature) {}
 
     double getNecessaryIroningTime() const override {
         // 120s/kg, as per the requirements

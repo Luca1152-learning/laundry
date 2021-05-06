@@ -9,12 +9,18 @@
 
 class Costume : public Washable {
 public:
-    explicit Costume(double pantsWeight, bool pantsHaveDarkColor,
-                     double shirtWeight, bool shirtHasDarkColor,
-                     double jacketWeight, bool jacketHasDarkColor)
-            : m_pants(pantsWeight, pantsHaveDarkColor),
-              m_shirt(shirtWeight, shirtHasDarkColor),
-              m_jacket(jacketWeight, jacketHasDarkColor) {}
+    explicit Costume(
+            double pantsWeight, bool pantsHaveDarkColor,
+            double pantsMinWashingTemperature, double pantsMaxWashingTemperature,
+            double shirtWeight, bool shirtHasDarkColor,
+            double shirtMinWashingTemperature, double shirtMaxWashingTemperature,
+            double jacketWeight, bool jacketHasDarkColor,
+            double jacketMinWashingTemperature, double jacketMaxWashingTemperature
+    ) : m_pants(pantsWeight, pantsHaveDarkColor, pantsMinWashingTemperature, pantsMaxWashingTemperature),
+        m_shirt(shirtWeight, shirtHasDarkColor, shirtMinWashingTemperature, shirtMaxWashingTemperature),
+        m_jacket(jacketWeight, jacketHasDarkColor, jacketMinWashingTemperature, jacketMaxWashingTemperature),
+        Washable(10, 100) // TODO - Costume nu ar trebui sa fie Washable
+    {}
 
     double getNecessaryDetergentQuantity() const override {
         return m_pants.getNecessaryDetergentQuantity() + m_shirt.getNecessaryDetergentQuantity() +

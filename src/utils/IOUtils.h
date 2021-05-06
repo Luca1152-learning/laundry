@@ -35,7 +35,7 @@ public:
             cout << prompt;
             if (minValue != -1) {
                 if (maxValue == -1) cout << " (n >= " << minValue << ")";
-                else cout << " (" << minValue << " <= n <= " << maxValue;
+                else cout << " (" << minValue << " <= n <= " << maxValue << ")";
             } else if (maxValue != -1) {
                 cout << " (n <= " << maxValue << ")";
             }

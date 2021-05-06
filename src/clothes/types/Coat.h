@@ -6,8 +6,9 @@
 
 class Coat : public Clothing, public Washable {
 public:
-    explicit Coat(double weight, bool hasDarkColor)
-            : Clothing(weight, hasDarkColor, true), Washable(false, false) {
+    explicit Coat(double weight, bool hasDarkColor, double minWashingTemperature, double maxWashingTemperature)
+            : Clothing(weight, hasDarkColor, true),
+              Washable(minWashingTemperature, maxWashingTemperature, false, false) {
     }
 
     double getNecessaryDetergentQuantity() const override {

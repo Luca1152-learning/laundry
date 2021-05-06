@@ -6,7 +6,8 @@
 
 class Dress : public Clothing, public Washable {
 public:
-    explicit Dress(double weight, bool hasDarkColor) : Clothing(weight, hasDarkColor, false) {}
+    explicit Dress(double weight, bool hasDarkColor, double minWashingTemperature, double maxWashingTemperature)
+            : Clothing(weight, hasDarkColor, false), Washable(minWashingTemperature, maxWashingTemperature) {}
 
     double getNecessaryDetergentQuantity() const override {
         // As per the requirements

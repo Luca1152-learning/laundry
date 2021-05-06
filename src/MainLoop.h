@@ -32,7 +32,10 @@ private:
             cout << "\n";
             Client client = m_laundry.createClient();
             while (promptClientOrder(client));
+            cout << "\n";
+
             m_laundry.addClient(client);
+
             return true;
         } else if (commandChoice == choices["Exit program"]) {
             return false;
@@ -68,8 +71,13 @@ private:
         int itemsCount = promptItemsCount();
         double weight = promptWeight(itemsCount);
         bool hasDarkColor = promptHasDarkColor(itemsCount);
-        client.addClothingItems(clothingType, weight, hasDarkColor, itemsCount);
+        double minWashingTemperature, maxWashingTemperature;
+        tie(minWashingTemperature, maxWashingTemperature) = promptWashingTemperatureRange(itemsCount);
         cout << "\n";
+
+        client.addClothingItems(
+                clothingType, weight, hasDarkColor, minWashingTemperature, maxWashingTemperature, itemsCount
+        );
     }
 
     static ClothingType promptClothingType() {
@@ -113,6 +121,32 @@ private:
         return IOUtils::promptYesNo(
                 (itemsCount == 1) ? "The item has a dark color" : "The items have a dark color"
         );
+    }
+
+    static pair<double, double> promptWashingTemperatureRange(int itemsCount) {
+        map<string, int, greater<>> choices = {
+                {"A minimum washing temperature", 1},
+                {"A maximum washing temperature", 2},
+        };
+        cout << "\n";
+        int rangeChoice = IOUtils::promptNumberedChoice(
+                (itemsCount == 1) ? "The item requires" : "The items require",
+                MapUtils::getKeys(choices)
+        );
+        cout << "\n";
+
+        double minTemp = Washable::MIN_WASHING_TEMPERATURE, maxTemp = Washable::MAX_WASHING_TEMPERATURE;
+        if (rangeChoice == choices["A minimum washing temperature"]) {
+            minTemp = IOUtils::promptNumber("Minimum washing temperature:",
+                                            Washable::MIN_WASHING_TEMPERATURE, Washable::MAX_WASHING_TEMPERATURE);
+        } else if (rangeChoice == choices["A maximum washing temperature"]) {
+            maxTemp = IOUtils::promptNumber("Maximum washing temperature",
+                                            Washable::MIN_WASHING_TEMPERATURE, Washable::MAX_WASHING_TEMPERATURE);
+        } else {
+            throw runtime_error("This range choice isn't being handled.");
+        }
+
+        return {minTemp, maxTemp};
     }
 };
 
