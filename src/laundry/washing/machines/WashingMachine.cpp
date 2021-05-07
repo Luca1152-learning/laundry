@@ -7,6 +7,10 @@ WashingMachine::WashingMachine(double weightCapacity, double cycleCompletionDura
 
 bool WashingMachine::canAddItemToQueue(Washable *item) {
     auto clothingItem = dynamic_cast<Clothing *>(item);
+    if (not m_canWashHeavyClothes and clothingItem->isHeavy()) {
+        return false;
+    }
+
     return getQueueWeight() + clothingItem->getWeight() <= m_weightCapacity;
 }
 
@@ -18,8 +22,24 @@ bool WashingMachine::canWashHeavyClothes() const {
     return m_canWashHeavyClothes;
 }
 
-double WashingMachine::getWeightCapacity() const {
-    return m_weightCapacity;
+bool WashingMachine::hasDarkColoredClothesInQueue() const {
+    for (auto &item: m_queue) {
+        auto clothingItem = dynamic_cast<Clothing *>(item);
+        if (clothingItem->hasDarkColor()) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool WashingMachine::hasLightColoredClothesInQueue() const {
+    for (auto &item: m_queue) {
+        auto clothingItem = dynamic_cast<Clothing *>(item);
+        if (not clothingItem->hasDarkColor()) {
+            return true;
+        }
+    }
+    return false;
 }
 
 // Protected
@@ -29,7 +49,7 @@ void WashingMachine::updateHistory(Washable *item) {
     necessaryDetergentQuantitySS << fixed << setprecision(1) << item->getNecessaryDetergentQuantity();
 
     item->addHistoryEvent(
-            "WASH | " + cycleCompletionDurationSS.str() + "m | " +
+            "WASH | " + cycleCompletionDurationSS.str() + " minutes | " +
             necessaryDetergentQuantitySS.str() + "g detergent used | " +
             "Washing Machine #" + to_string(getId())
     );

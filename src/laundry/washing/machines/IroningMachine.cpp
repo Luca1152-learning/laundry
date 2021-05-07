@@ -14,7 +14,7 @@ void IroningMachine::updateHistory(Washable *item) {
     necessaryIroningTimeSS << fixed << setprecision(1) << item->getNecessaryIroningTime();
 
     item->addHistoryEvent(
-            string("IRON | ") + necessaryIroningTimeSS.str() + "m | " +
+            string("IRON | ") + necessaryIroningTimeSS.str() + " minutes | " +
             "Ironing Machine #" + to_string(getId())
     );
 }

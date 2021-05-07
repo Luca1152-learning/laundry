@@ -17,7 +17,7 @@ void DryingMachine::updateHistory(Washable *item) {
     stringstream cycleCompletionDurationSS;
     cycleCompletionDurationSS << fixed << setprecision(1) << m_cycleCompletionDuration;
     item->addHistoryEvent(
-            "DRY | " + cycleCompletionDurationSS.str() + "m | " +
+            "DRY | " + cycleCompletionDurationSS.str() + " minutes | " +
             "Drying Machine #" + to_string(getId())
     );
 }

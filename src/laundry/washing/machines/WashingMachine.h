@@ -19,7 +19,9 @@ public:
 
     bool canWashHeavyClothes() const;
 
-    double getWeightCapacity() const;
+    bool hasDarkColoredClothesInQueue() const;
+
+    bool hasLightColoredClothesInQueue() const;
 
 protected:
     void updateHistory(Washable *item) override;

@@ -79,9 +79,25 @@ bool Laundry::queueWashingMachines() {
 
     while (itemsToQueue) {
         Washable *topItem = m_washingQueue.front();
+        auto topClothingItem = dynamic_cast<Clothing *>(topItem);
+
         bool didQueueItem = false;
 
         for (auto &machine: m_washingMachines) {
+            // Don't wash light color clothes and dark color clothes toghether
+            if ((topClothingItem->hasDarkColor() and machine.hasLightColoredClothesInQueue())
+                or (not topClothingItem->hasDarkColor() and machine.hasDarkColoredClothesInQueue())) {
+                continue;
+            }
+            // Don't wash heavy clothes in non-special washing machines
+            if (topClothingItem->isHeavy() and not machine.canWashHeavyClothes()) {
+                continue;
+            }
+            // Don't wash non-heavy clothes in special washing machines (as to be more efficient)
+            if (not topClothingItem->isHeavy() and machine.canWashHeavyClothes()) {
+                continue;
+            }
+
             if (machine.canAddItemToQueue(topItem)) {
                 machine.queueItem(topItem);
 
@@ -95,7 +111,6 @@ bool Laundry::queueWashingMachines() {
 
                 didQueueItem = true;
                 didQueueItems = true;
-                itemsToQueue--;
                 break;
             }
         }
@@ -106,6 +121,8 @@ bool Laundry::queueWashingMachines() {
             m_washingQueue.push(topItem);
             m_washingQueue.pop();
         }
+
+        itemsToQueue--;
     }
     return didQueueItems;
 }
