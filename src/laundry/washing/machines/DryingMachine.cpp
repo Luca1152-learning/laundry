@@ -20,6 +20,7 @@ void DryingMachine::updateHistory(Washable *item) {
             "DRY | " + cycleCompletionDurationSS.str() + " minutes | " +
             "Drying Machine #" + to_string(getId())
     );
+    item->addTimeSpentInMachine(m_cycleCompletionDuration);
 }
 
 int DryingMachine::getId() const {

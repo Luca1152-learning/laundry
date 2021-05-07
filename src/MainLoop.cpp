@@ -30,6 +30,8 @@ bool MainLoop::promptCommand() {
 
         m_laundry.addClient(client);
         m_laundry.runMachines(false);
+        printCompletedClientOrders();
+        cout << "\n";
 
         return true;
     } else if (laundryHasClients and commandChoice == 2) {
@@ -202,5 +204,19 @@ bool MainLoop::promptViewClothesHistoryForClient(const Client &client) {
         cout << "\n";
 
         return true;
+    }
+}
+
+void MainLoop::printCompletedClientOrders() {
+    for (auto &client: m_laundry.getClients()) {
+        // If a new client's clothes were all completely washed
+        if (find(m_oldClients.begin(), m_oldClients.end(), client) == m_oldClients.end() and
+            client.didAllClothesCompleteWashingCircuit()) {
+            cout << "[!] Client #" << client.getId() << "'s order was completed.\n"
+                 << "[!] Detergent used: " << client.getClothesTotalDetergentUsed() << "g. "
+                 << "[!] Clothes' total time spent in machines: " << client.getClothesTotalTimeSpentInMachines()
+                 << " minutes\n";
+            m_oldClients.push_back(client);
+        }
     }
 }

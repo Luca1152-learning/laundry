@@ -22,6 +22,7 @@ void WringerMachine::updateHistory(Washable *item) {
             "WRING | " + cycleCompletionDurationSS.str() + " minutes | " +
             "Wringer Machine #" + to_string(getId())
     );
+    item->addTimeSpentInMachine(m_cycleCompletionDuration);
 }
 
 int WringerMachine::getId() const {

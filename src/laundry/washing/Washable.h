@@ -2,11 +2,11 @@
 #define LAUNDRY_WASHABLE_H
 
 #include <stdexcept>
-#include "WashingHistory.h"
+#include "HistoryObject.h"
 
 using namespace std;
 
-class Washable {
+class Washable : public HistoryObject {
 public:
     // The normal range for washing temperature
     static constexpr double MIN_WASHING_TEMPERATURE = 10;
@@ -21,10 +21,6 @@ public:
 
     virtual double getNecessaryIroningTime() const;
 
-    void addHistoryEvent(const string &historyEvent);
-
-    void printHistory();
-
     bool mustBeWringed() const;
 
     bool mustBeIroned() const;
@@ -33,6 +29,10 @@ public:
 
     double getMaxWashingTemperature() const;
 
+    bool didCompleteWashingCircuit() const;
+
+    void markWashingCircuitAsCompleted();
+
     virtual ~Washable() = default;
 
 protected:
@@ -40,9 +40,9 @@ protected:
     const double STANDARD_DETERGENT_QUANTITY = 80;
 
 private:
-    WashingHistory m_history;
     const double m_minWashingTemperature, m_maxWashingTemperature;
     const bool m_mustBeWringed, m_mustBeIroned;
+    bool m_didCompleteWashingCircuit = false;
 };
 
 #endif //LAUNDRY_WASHABLE_H

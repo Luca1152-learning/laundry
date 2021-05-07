@@ -16,6 +16,7 @@ public:
 
 private:
     Laundry m_laundry;
+    vector<Client> m_oldClients;
 
     bool promptCommand();
 
@@ -38,6 +39,9 @@ private:
     void promptViewClientsClothesHistory();
 
     bool promptViewClothesHistoryForClient(const Client &client);
+
+    // Stats
+    void printCompletedClientOrders();
 };
 
 #endif //LAUNDRY_MAINLOOP_H

@@ -29,7 +29,7 @@ public:
 
     void runMachines(bool onlyIfHalfFull = true);
 
-    const vector<Client> &getClients();
+    const vector<Client> &getClients() const;
 
 private:
     vector<Client> m_clients;

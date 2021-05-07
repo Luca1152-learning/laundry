@@ -17,6 +17,7 @@ void IroningMachine::updateHistory(Washable *item) {
             string("IRON | ") + necessaryIroningTimeSS.str() + " minutes | " +
             "Ironing Machine #" + to_string(getId())
     );
+    item->addTimeSpentInMachine(item->getNecessaryIroningTime());
 }
 
 int IroningMachine::getId() const {

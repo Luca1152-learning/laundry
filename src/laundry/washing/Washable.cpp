@@ -10,14 +10,6 @@ double Washable::getNecessaryIroningTime() const {
     throw runtime_error("This clothing type can't be ironed.");
 }
 
-void Washable::addHistoryEvent(const string &historyEvent) {
-    m_history.addHistoryEvent(historyEvent);
-}
-
-void Washable::printHistory() {
-    m_history.printHistory();
-}
-
 bool Washable::mustBeWringed() const {
     return m_mustBeWringed;
 }
@@ -32,4 +24,16 @@ double Washable::getMinWashingTemperature() const {
 
 double Washable::getMaxWashingTemperature() const {
     return m_maxWashingTemperature;
+}
+
+bool Washable::didCompleteWashingCircuit() const {
+    return m_didCompleteWashingCircuit;
+}
+
+void Washable::markWashingCircuitAsCompleted() {
+    if (m_didCompleteWashingCircuit) {
+        throw runtime_error("The washing circuit was already marked as completed. That's unexpected.");
+    }
+
+    m_didCompleteWashingCircuit = true;
 }

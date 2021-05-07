@@ -21,7 +21,7 @@ void Laundry::runMachines(bool onlyIfHalfFull) {
     runIroningMachines();
 }
 
-const vector<Client> &Laundry::getClients() {
+const vector<Client> &Laundry::getClients() const {
     return m_clients;
 }
 
@@ -215,6 +215,8 @@ bool Laundry::queueDryingMachines() {
             // Queue the next step
             if (item->mustBeIroned()) {
                 m_ironingQueue.push(item);
+            } else {
+                item->markWashingCircuitAsCompleted();
             }
             m_dryingQueue.pop();
 
@@ -256,7 +258,10 @@ bool Laundry::queueIroningMachines() {
     bool didQueueItems = false;
     for (auto &machine: m_ironingMachines) {
         while (not m_ironingQueue.empty() and machine.canAddItemToQueue(m_ironingQueue.front())) {
-            machine.queueItem(m_ironingQueue.front());
+            Washable *item = m_ironingQueue.front();
+
+            machine.queueItem(item);
+            item->markWashingCircuitAsCompleted();
             m_ironingQueue.pop();
 
             didQueueItems = true;

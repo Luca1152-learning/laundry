@@ -27,6 +27,17 @@ public:
 
     const vector<Washable *> &getClothingItems() const;
 
+    double getClothesTotalTimeSpentInMachines() const;
+
+    double getClothesTotalDetergentUsed() const;
+
+    bool didAllClothesCompleteWashingCircuit() const;
+
+    // Operators
+    bool operator==(const Client &other) const;
+
+    bool operator!=(const Client &other) const;
+
 private:
     const int m_id;
     static int lastId;

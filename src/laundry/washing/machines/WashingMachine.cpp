@@ -53,6 +53,8 @@ void WashingMachine::updateHistory(Washable *item) {
             necessaryDetergentQuantitySS.str() + "g detergent used | " +
             "Washing Machine #" + to_string(getId())
     );
+    item->addTimeSpentInMachine(m_cycleCompletionDuration);
+    item->addDetergentUsed(item->getNecessaryDetergentQuantity());
 }
 
 int WashingMachine::getId() const {
