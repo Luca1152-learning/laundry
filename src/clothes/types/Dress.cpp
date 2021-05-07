@@ -7,3 +7,7 @@ double Dress::getNecessaryDetergentQuantity() const {
     // As per the requirements
     return Washable::STANDARD_DETERGENT_QUANTITY;
 }
+
+double Dress::getNecessaryIroningTime() const {
+    return 60 * getWeight();
+}

@@ -2,8 +2,7 @@
 
 // Public
 Jacket::Jacket(double weight, bool hasDarkColor, double minWashingTemperature, double maxWashingTemperature)
-        : Clothing(weight, hasDarkColor, true),
-          Washable(minWashingTemperature, maxWashingTemperature, false, false) {}
+        : Clothing(weight, hasDarkColor, true), Washable(minWashingTemperature, maxWashingTemperature) {}
 
 double Jacket::getNecessaryDetergentQuantity() const {
     // 100g/kg, as per the requirements

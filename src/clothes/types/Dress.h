@@ -9,6 +9,8 @@ public:
     explicit Dress(double weight, bool hasDarkColor, double minWashingTemperature, double maxWashingTemperature);
 
     double getNecessaryDetergentQuantity() const override;
+
+    double getNecessaryIroningTime() const override;
 };
 
 #endif //LAUNDRY_DRESS_H
