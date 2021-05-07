@@ -23,25 +23,11 @@ using namespace std;
 
 class Laundry {
 public:
-    Laundry() {
-        addMachines();
-    }
+    Laundry();
 
-    void addClient(const Client &client) {
-        m_clients.push_back(client);
+    void addClient(const Client &client);
 
-        const vector<Washable *> &clientItems = client.getClothingItems();
-        for (auto &item: clientItems) {
-            m_washingQueue.push(item);
-        }
-    }
-
-    void runMachines(bool onlyIfHalfFull = true) {
-        runWashingMachines(onlyIfHalfFull);
-        runWringerMachines(onlyIfHalfFull);
-        runDryingMachines(onlyIfHalfFull);
-        runIroningMachines();
-    }
+    void runMachines(bool onlyIfHalfFull = true);
 
 private:
     vector<Client> m_clients;
@@ -55,90 +41,35 @@ private:
     vector<DryingMachine> m_dryingMachines;
     vector<IroningMachine> m_ironingMachines;
 
-    void addMachines() {
-        // Washing machines
-        m_washingMachines.emplace_back(150, 45, true);
-        m_washingMachines.emplace_back(150, 45, true);
-        m_washingMachines.emplace_back(120, 45, false);
-        m_washingMachines.emplace_back(100, 60, false);
-        m_washingMachines.emplace_back(50, 45, false);
-        m_washingMachines.emplace_back(50, 60, false);
-        m_washingMachines.emplace_back(50, 60, false);
+    void addMachines();
 
-        // Wringer machines
-        m_wringerMachines.emplace_back(150, 10);
-        m_wringerMachines.emplace_back(150, 10);
-        m_wringerMachines.emplace_back(100, 10);
-        m_wringerMachines.emplace_back(100, 10);
-        m_wringerMachines.emplace_back(100, 10);
-        m_wringerMachines.emplace_back(50, 10);
-        m_wringerMachines.emplace_back(50, 10);
+    // Washing machines
+    void runWashingMachines(bool onlyIfHalfFull);
 
-        // Drying machines
-        m_dryingMachines.emplace_back(100, 10);
-        m_dryingMachines.emplace_back(50, 10);
-        m_dryingMachines.emplace_back(50, 10);
-        m_dryingMachines.emplace_back(50, 10);
+    bool queueWashingMachines();
 
-        // Ironing machines
-        const int IRONING_MACHINES_COUNT = 25;
-        for (int i = 0; i < IRONING_MACHINES_COUNT; i++) {
-            m_ironingMachines.emplace_back();
-        }
-    }
+    bool startWashingMachines(bool onlyIfHalfFull);
 
-    void runWashingMachines(bool onlyIfHalfFull) {
-        while (true) {
-            bool didQueueItems = queueWashingMachines();
-            if (didQueueItems) {
-                bool didRunMachines = startWashingMachines(onlyIfHalfFull);
-                if (not didRunMachines) {
-                    break;
-                }
-            } else {
-                break;
-            }
-        }
-    }
+    // Wringer machines
+    void runWringerMachines(bool onlyIfHalfFull);
 
-    bool queueWashingMachines() {
-        bool didQueueItems = false;
-        for (auto &machine: m_washingMachines) {
-            while (not m_washingQueue.empty() and machine.canAddItemToQueue(m_washingQueue.front())) {
-                machine.queueItem(m_washingQueue.front());
-                m_wringingQueue.push(m_washingQueue.front());
-                m_washingQueue.pop();
+    bool queueWringerMachines();
 
-                didQueueItems = true;
-            }
-        }
-        return didQueueItems;
-    }
+    bool startWringerMachines(bool onlyIfHalfFull);
 
-    bool startWashingMachines(bool onlyIfHalfFull) {
-        bool didRunMachines = false;
-        for (auto &machine: m_washingMachines) {
-            if (onlyIfHalfFull) {
-                if (machine.isAtLeastHalfFull()) {
-                    machine.run();
-                    didRunMachines = true;
-                }
-            } else {
-                machine.run();
-                didRunMachines = true;
-            }
-        }
-        return didRunMachines;
-    }
+    // Drying machines
+    void runDryingMachines(bool onlyIfHalfFull);
 
-    void runWringerMachines(bool onlyIfHalfFull) {
-    }
+    bool queueDryingMachines();
 
-    void runDryingMachines(bool onlyIfHalfFull) {
-    }
+    bool startDryingMachines(bool onlyIfHalfFull);
 
-    void runIroningMachines() {
-    }
+    // Ironing machines
+    void runIroningMachines();
+
+    bool queueIroningMachines();
+
+    void startIroningMachines();
 };
 
 #endif //LAUNDRY_LAUNDRY_H

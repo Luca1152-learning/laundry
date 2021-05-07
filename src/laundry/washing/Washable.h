@@ -12,9 +12,6 @@ public:
     static constexpr double MIN_WASHING_TEMPERATURE = 10;
     static constexpr double MAX_WASHING_TEMPERATURE = 90;
 
-    // The size of the standard measure of detergent (in grams) used for washing a piece of clothing
-    const double STANDARD_DETERGENT_QUANTITY = 80;
-
     explicit Washable(
             double minWashingTemperature, double maxWashingTemperature,
             bool mustBeWringed = true, bool mustBeIroned = true
@@ -36,7 +33,19 @@ public:
         m_history.printHistory();
     }
 
+    bool mustBeWringed() {
+        return m_mustBeWringed;
+    }
+
+    bool mustBeIroned() {
+        return m_mustBeIroned;
+    }
+
     virtual ~Washable() = default;
+
+protected:
+    // The size of the standard measure of detergent (in grams) used for washing a piece of clothing
+    const double STANDARD_DETERGENT_QUANTITY = 80;
 
 private:
     WashingHistory m_history;
