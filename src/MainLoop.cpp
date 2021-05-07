@@ -9,7 +9,7 @@ void MainLoop::run() {
 bool MainLoop::promptCommand() {
     int commandChoice = IOUtils::promptNumberedChoice(
             "Operation to perform",
-            {"Add client", "Exit program"}
+            {"Add client", "View clothes' history", "Exit program"}
     );
 
     if (commandChoice == 1) {
@@ -23,6 +23,9 @@ bool MainLoop::promptCommand() {
 
         return true;
     } else if (commandChoice == 2) {
+        promptViewClothesHistory();
+        return true;
+    } else if (commandChoice == 3) {
         return false;
     } else {
         throw runtime_error("This command choice isn't being handled.");
@@ -117,3 +120,76 @@ pair<double, double> MainLoop::promptWashingTemperatureRange(int itemsCount) {
     return {minTemp, maxTemp};
 }
 
+void MainLoop::promptViewClothesHistory() {
+    cout << "\n";
+    if (m_laundry.getClients().empty()) {
+        cout << "[!] No clients were added yet.\n\n";
+        return;
+    }
+
+    int clientId = IOUtils::promptNumber(
+            "Enter the client's id whose clothes' history you want to see",
+            1, (int) (m_laundry.getClients().size())
+    );
+
+    for (auto &client: m_laundry.getClients()) {
+        if (client.getId() == clientId) {
+            while (promptViewClothesHistoryForClient(client));
+            return;
+        }
+    }
+
+    throw runtime_error("The client wasn't found. This wasn't expected.");
+}
+
+bool MainLoop::promptViewClothesHistoryForClient(const Client &client) {
+    vector<Washable *> clothingItems = client.getClothingItems();
+    vector<string> choices;
+    for (auto &item: clothingItems) {
+        double minWashingTemperature = item->getMinWashingTemperature();
+        double maxWashingTemperature = item->getMaxWashingTemperature();
+        string clothingType = ClothingTypeUtils::toString(WashableUtils::getClothingType(item));
+
+        auto clothing = dynamic_cast<Clothing *>(item);
+        double weight = clothing->getWeight();
+        int itemId = clothing->getId();
+        bool hasDarkColor = clothing->hasDarkColor();
+
+
+        stringstream weightSS, minWashingTemperatureSS, maxWashingTemperatureSS;
+        weightSS << fixed << setprecision(1) << weight;
+        minWashingTemperatureSS << fixed << setprecision(1) << minWashingTemperature;
+        maxWashingTemperatureSS << fixed << setprecision(1) << maxWashingTemperature;
+
+        string itemChoiceString = clothingType + " (id #" + to_string(itemId) + ") | " +
+                                  weightSS.str() + " kg";
+        if (hasDarkColor) {
+            itemChoiceString += " | dark colored";
+        }
+        itemChoiceString += " | washing temperature: " + minWashingTemperatureSS.str() + "-" +
+                            maxWashingTemperatureSS.str();
+
+        choices.push_back(itemChoiceString);
+    }
+    choices.emplace_back("Exit");
+
+    int commandChoice = IOUtils::promptNumberedChoice("Item choice", choices);
+    if (commandChoice == choices.size()) {
+        // Exit
+        cout << "\n";
+        return false;
+    } else {
+        cout << "\n";
+        clothingItems[commandChoice - 1]->printHistory();
+        cout << "\n";
+
+        // Prompt for ENTER before showing the menu again
+        cout << "[!] Press ENTER to continue";
+        cin.sync();
+        cin.ignore(256, '\n');
+        cin.get();
+        cout << "\n";
+
+        return true;
+    }
+}

@@ -3,7 +3,7 @@
 // Public
 WashingMachine::WashingMachine(double weightCapacity, double cycleCompletionDuration, bool canWashHeavyClothes)
         : m_weightCapacity(weightCapacity), m_cycleCompletionDuration(cycleCompletionDuration),
-          m_canWashHeavyClothes(canWashHeavyClothes) {}
+          m_canWashHeavyClothes(canWashHeavyClothes), m_id(++lastId) {}
 
 bool WashingMachine::canAddItemToQueue(Washable *item) {
     auto clothingItem = dynamic_cast<Clothing *>(item);
@@ -24,9 +24,20 @@ double WashingMachine::getWeightCapacity() const {
 
 // Protected
 void WashingMachine::updateHistory(Washable *item) {
+    stringstream cycleCompletionDurationSS, necessaryDetergentQuantitySS;
+    cycleCompletionDurationSS << fixed << setprecision(1) << m_cycleCompletionDuration;
+    necessaryDetergentQuantitySS << fixed << setprecision(1) << item->getNecessaryDetergentQuantity();
+
     item->addHistoryEvent(
-            "WASH | " + to_string(m_cycleCompletionDuration) + "s | " +
-            to_string(item->getNecessaryDetergentQuantity()) + "g detergent used | " +
+            "WASH | " + cycleCompletionDurationSS.str() + "s | " +
+            necessaryDetergentQuantitySS.str() + "g detergent used | " +
             "Washing Machine #" + to_string(getId())
     );
 }
+
+int WashingMachine::getId() const {
+    return m_id;
+}
+
+// Private
+int WashingMachine::lastId = 0;

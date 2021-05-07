@@ -14,6 +14,8 @@ public:
             ClothingType clothingType, double weight, bool hasDarkColor,
             double minWashingTemperature, double maxWashingTemperature
     );
+
+    static ClothingType getClothingType(Washable *washable);
 };
 
 #endif //LAUNDRY_WASHABLEUTILS_H

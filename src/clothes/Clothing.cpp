@@ -12,3 +12,11 @@ double Clothing::getWeight() const {
 bool Clothing::hasDarkColor() const {
     return m_hasDarkColor;
 }
+
+bool Clothing::isHeavy() const {
+    return m_isHeavy;
+}
+
+int Clothing::getId() const {
+    return m_id;
+}

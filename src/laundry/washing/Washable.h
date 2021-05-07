@@ -29,6 +29,10 @@ public:
 
     bool mustBeIroned() const;
 
+    double getMinWashingTemperature() const;
+
+    double getMaxWashingTemperature() const;
+
     virtual ~Washable() = default;
 
 protected:

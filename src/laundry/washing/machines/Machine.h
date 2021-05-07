@@ -9,8 +9,6 @@ using namespace std;
 
 class Machine {
 public:
-    explicit Machine();
-
     void queueItem(Washable *item);
 
     virtual bool canAddItemToQueue(Washable *item) = 0;
@@ -21,16 +19,12 @@ public:
 
 protected:
     vector<Washable *> m_queue;
-    const int m_id;
 
     virtual void updateHistory(Washable *item) = 0;
 
     double getQueueWeight() const;
 
-    int getId() const;
-
-private:
-    static int lastId;
+    virtual int getId() const = 0;
 };
 
 #endif //LAUNDRY_MACHINE_H

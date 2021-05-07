@@ -19,3 +19,25 @@ Washable *WashableUtils::makeClothingItem(ClothingType clothingType, double weig
             return new Windbreaker(weight, hasDarkColor, minWashingTemperature, maxWashingTemperature);
     }
 }
+
+ClothingType WashableUtils::getClothingType(Washable *washable) {
+    auto coat = dynamic_cast<Coat *>(washable);
+    if (coat) return ClothingType::COAT;
+
+    auto dress = dynamic_cast<Dress *>(washable);
+    if (dress) return ClothingType::DRESS;
+
+    auto jacket = dynamic_cast<Jacket *>(washable);
+    if (jacket) return ClothingType::JACKET;
+
+    auto pants = dynamic_cast<Pants *>(washable);
+    if (pants) return ClothingType::PANTS;
+
+    auto shirt = dynamic_cast<Shirt *>(washable);
+    if (shirt) return ClothingType::SHIRT;
+
+    auto windbreaker = dynamic_cast<Windbreaker *>(washable);
+    if (windbreaker) return ClothingType::WINDBREAKER;
+
+    throw runtime_error("Couldn't determine the Washable*'s clothing type.");
+}

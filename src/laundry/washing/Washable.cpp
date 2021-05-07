@@ -25,3 +25,11 @@ bool Washable::mustBeWringed() const {
 bool Washable::mustBeIroned() const {
     return m_mustBeIroned;
 }
+
+double Washable::getMinWashingTemperature() const {
+    return m_minWashingTemperature;
+}
+
+double Washable::getMaxWashingTemperature() const {
+    return m_maxWashingTemperature;
+}

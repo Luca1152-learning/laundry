@@ -2,6 +2,8 @@
 #define LAUNDRY_WASHINGMACHINE_H
 
 #include "Machine.h"
+#include <sstream>
+#include <iomanip>
 
 class WashingMachine : public Machine {
 public:
@@ -9,6 +11,10 @@ public:
 
     bool canAddItemToQueue(Washable *item) override;
 
+protected:
+    int getId() const override;
+
+public:
     bool isAtLeastHalfFull() const;
 
     bool canWashHeavyClothes() const;
@@ -21,6 +27,9 @@ protected:
 private:
     const double m_weightCapacity, m_cycleCompletionDuration;
     const bool m_canWashHeavyClothes;
+    const int m_id;
+
+    static int lastId;
 };
 
 #endif //LAUNDRY_WASHINGMACHINE_H

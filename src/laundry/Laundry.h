@@ -29,6 +29,8 @@ public:
 
     void runMachines(bool onlyIfHalfFull = true);
 
+    const vector<Client> &getClients();
+
 private:
     vector<Client> m_clients;
 

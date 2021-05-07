@@ -11,6 +11,10 @@ public:
 
     bool hasDarkColor() const;
 
+    bool isHeavy() const;
+
+    int getId() const;
+
     virtual ~Clothing() = default;
 
 private:

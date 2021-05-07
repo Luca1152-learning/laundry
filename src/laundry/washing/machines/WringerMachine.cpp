@@ -2,7 +2,7 @@
 
 // Public
 WringerMachine::WringerMachine(double weightCapacity, double cycleCompletionDuration)
-        : m_weightCapacity(weightCapacity), m_cycleCompletionDuration(cycleCompletionDuration) {}
+        : m_weightCapacity(weightCapacity), m_cycleCompletionDuration(cycleCompletionDuration), m_id(++lastId) {}
 
 bool WringerMachine::canAddItemToQueue(Washable *item) {
     auto clothingItem = dynamic_cast<Clothing *>(item);
@@ -15,9 +15,18 @@ bool WringerMachine::isAtLeastHalfFull() const {
 
 // Protected
 void WringerMachine::updateHistory(Washable *item) {
+    stringstream cycleCompletionDurationSS;
+    cycleCompletionDurationSS << fixed << setprecision(1) << m_cycleCompletionDuration;
+
     item->addHistoryEvent(
-            "WRING | " + to_string(m_cycleCompletionDuration) + "s | " +
+            "WRING | " + cycleCompletionDurationSS.str() + "s | " +
             "Wringer Machine #" + to_string(getId())
     );
 }
 
+int WringerMachine::getId() const {
+    return m_id;
+}
+
+// Private
+int WringerMachine::lastId = 0;

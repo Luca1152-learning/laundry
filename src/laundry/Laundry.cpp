@@ -21,6 +21,10 @@ void Laundry::runMachines(bool onlyIfHalfFull) {
     runIroningMachines();
 }
 
+const vector<Client> &Laundry::getClients() {
+    return m_clients;
+}
+
 // Private
 void Laundry::addMachines() {
     // Washing machines

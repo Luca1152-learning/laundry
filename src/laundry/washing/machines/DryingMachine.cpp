@@ -2,7 +2,7 @@
 
 // Public
 DryingMachine::DryingMachine(int itemsCapacity, double cycleCompletionDuration)
-        : m_itemsCapacity(itemsCapacity), m_cycleCompletionDuration(cycleCompletionDuration) {}
+        : m_itemsCapacity(itemsCapacity), m_cycleCompletionDuration(cycleCompletionDuration), m_id(++lastId) {}
 
 bool DryingMachine::canAddItemToQueue(Washable *item) {
     return m_queue.size() != m_itemsCapacity;
@@ -14,9 +14,18 @@ bool DryingMachine::isAtLeastHalfFull() const {
 
 // Protected
 void DryingMachine::updateHistory(Washable *item) {
+    stringstream cycleCompletionDurationSS;
+    cycleCompletionDurationSS << fixed << setprecision(1) << m_cycleCompletionDuration;
     item->addHistoryEvent(
-            "DRY | " + to_string(m_cycleCompletionDuration) + "s | " +
+            "DRY | " + cycleCompletionDurationSS.str() + "s | " +
             "Drying Machine #" + to_string(getId())
     );
 }
 
+int DryingMachine::getId() const {
+    return m_id;
+}
+
+
+// Private
+int DryingMachine::lastId = 0;

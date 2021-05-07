@@ -2,6 +2,8 @@
 #define LAUNDRY_MAINLOOP_H
 
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 #include <map>
 #include "laundry/Laundry.h"
 #include "utils/IOUtils.h"
@@ -17,6 +19,7 @@ private:
 
     bool promptCommand();
 
+    // Clothes orders
     static bool promptClientOrder(Client &client);
 
     static void promptAddClothingItemToClient(Client &client);
@@ -30,6 +33,11 @@ private:
     static bool promptHasDarkColor(int itemsCount);
 
     static pair<double, double> promptWashingTemperatureRange(int itemsCount);
+
+    // View history
+    void promptViewClothesHistory();
+
+    bool promptViewClothesHistoryForClient(const Client &client);
 };
 
 #endif //LAUNDRY_MAINLOOP_H
