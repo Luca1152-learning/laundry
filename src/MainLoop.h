@@ -35,7 +35,7 @@ private:
     static pair<double, double> promptWashingTemperatureRange(int itemsCount);
 
     // View history
-    void promptViewClothesHistory();
+    void promptViewClientsClothesHistory();
 
     bool promptViewClothesHistoryForClient(const Client &client);
 };

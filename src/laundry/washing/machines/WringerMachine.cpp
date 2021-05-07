@@ -19,7 +19,7 @@ void WringerMachine::updateHistory(Washable *item) {
     cycleCompletionDurationSS << fixed << setprecision(1) << m_cycleCompletionDuration;
 
     item->addHistoryEvent(
-            "WRING | " + cycleCompletionDurationSS.str() + "s | " +
+            "WRING | " + cycleCompletionDurationSS.str() + "m | " +
             "Wringer Machine #" + to_string(getId())
     );
 }

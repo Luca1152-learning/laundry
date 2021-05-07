@@ -7,10 +7,20 @@ void MainLoop::run() {
 
 // Private
 bool MainLoop::promptCommand() {
-    int commandChoice = IOUtils::promptNumberedChoice(
-            "Operation to perform",
-            {"Add client", "View clothes' history", "Exit program"}
-    );
+    vector<string> choices = {"Add client"};
+
+    bool laundryHasClients = not m_laundry.getClients().empty();
+    if (laundryHasClients) {
+        if (m_laundry.getClients().size() == 1) {
+            choices.emplace_back("View client's clothes' history");
+        } else {
+            choices.emplace_back("View clients' clothes' history");
+        }
+    }
+
+    choices.emplace_back("Exit program");
+
+    int commandChoice = IOUtils::promptNumberedChoice("Operation to perform", choices);
 
     if (commandChoice == 1) {
         cout << "\n";
@@ -22,10 +32,10 @@ bool MainLoop::promptCommand() {
         m_laundry.runMachines(false);
 
         return true;
-    } else if (commandChoice == 2) {
-        promptViewClothesHistory();
+    } else if (laundryHasClients and commandChoice == 2) {
+        promptViewClientsClothesHistory();
         return true;
-    } else if (commandChoice == 3) {
+    } else if (commandChoice == 2 + laundryHasClients) {
         return false;
     } else {
         throw runtime_error("This command choice isn't being handled.");
@@ -120,26 +130,27 @@ pair<double, double> MainLoop::promptWashingTemperatureRange(int itemsCount) {
     return {minTemp, maxTemp};
 }
 
-void MainLoop::promptViewClothesHistory() {
+void MainLoop::promptViewClientsClothesHistory() {
     cout << "\n";
-    if (m_laundry.getClients().empty()) {
-        cout << "[!] No clients were added yet.\n\n";
+
+    if (m_laundry.getClients().size() == 1) {
+        while (promptViewClothesHistoryForClient(m_laundry.getClients()[0]));
         return;
-    }
+    } else {
+        int clientId = IOUtils::promptNumber(
+                "Enter the client's id whose clothes' history you want to see",
+                1, (int) (m_laundry.getClients().size())
+        );
 
-    int clientId = IOUtils::promptNumber(
-            "Enter the client's id whose clothes' history you want to see",
-            1, (int) (m_laundry.getClients().size())
-    );
-
-    for (auto &client: m_laundry.getClients()) {
-        if (client.getId() == clientId) {
-            while (promptViewClothesHistoryForClient(client));
-            return;
+        for (auto &client: m_laundry.getClients()) {
+            if (client.getId() == clientId) {
+                while (promptViewClothesHistoryForClient(client));
+                return;
+            }
         }
-    }
 
-    throw runtime_error("The client wasn't found. This wasn't expected.");
+        throw runtime_error("The client wasn't found. This wasn't expected.");
+    }
 }
 
 bool MainLoop::promptViewClothesHistoryForClient(const Client &client) {

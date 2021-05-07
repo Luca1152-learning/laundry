@@ -75,22 +75,36 @@ void Laundry::runWashingMachines(bool onlyIfHalfFull) {
 
 bool Laundry::queueWashingMachines() {
     bool didQueueItems = false;
-    for (auto &machine: m_washingMachines) {
-        while (not m_washingQueue.empty() and machine.canAddItemToQueue(m_washingQueue.front())) {
-            Washable *item = m_washingQueue.front();
+    int itemsToQueue = m_washingQueue.size();
 
-            // Queue the machine
-            machine.queueItem(item);
+    while (itemsToQueue) {
+        Washable *topItem = m_washingQueue.front();
+        bool didQueueItem = false;
 
-            // Queue the next step
-            if (item->mustBeWringed()) {
-                m_wringingQueue.push(item);
-            } else {
-                m_dryingQueue.push(item);
+        for (auto &machine: m_washingMachines) {
+            if (machine.canAddItemToQueue(topItem)) {
+                machine.queueItem(topItem);
+
+                // Queue the next step
+                if (topItem->mustBeWringed()) {
+                    m_wringingQueue.push(topItem);
+                } else {
+                    m_dryingQueue.push(topItem);
+                }
+                m_washingQueue.pop();
+
+                didQueueItem = true;
+                didQueueItems = true;
+                itemsToQueue--;
+                break;
             }
-            m_washingQueue.pop();
+        }
 
-            didQueueItems = true;
+        // An item couldn't be queued, which means that there was no available washing machine
+        // for it. Thus, it should be rescheduled for the next run.
+        if (not didQueueItem) {
+            m_washingQueue.push(topItem);
+            m_washingQueue.pop();
         }
     }
     return didQueueItems;

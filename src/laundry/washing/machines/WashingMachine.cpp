@@ -29,7 +29,7 @@ void WashingMachine::updateHistory(Washable *item) {
     necessaryDetergentQuantitySS << fixed << setprecision(1) << item->getNecessaryDetergentQuantity();
 
     item->addHistoryEvent(
-            "WASH | " + cycleCompletionDurationSS.str() + "s | " +
+            "WASH | " + cycleCompletionDurationSS.str() + "m | " +
             necessaryDetergentQuantitySS.str() + "g detergent used | " +
             "Washing Machine #" + to_string(getId())
     );
