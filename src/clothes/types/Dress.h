@@ -6,13 +6,9 @@
 
 class Dress : public Clothing, public Washable {
 public:
-    explicit Dress(double weight, bool hasDarkColor, double minWashingTemperature, double maxWashingTemperature)
-            : Clothing(weight, hasDarkColor, false), Washable(minWashingTemperature, maxWashingTemperature) {}
+    explicit Dress(double weight, bool hasDarkColor, double minWashingTemperature, double maxWashingTemperature);
 
-    double getNecessaryDetergentQuantity() const override {
-        // As per the requirements
-        return Washable::STANDARD_DETERGENT_QUANTITY;
-    }
+    double getNecessaryDetergentQuantity() const override;
 };
 
 #endif //LAUNDRY_DRESS_H

@@ -5,17 +5,10 @@
 
 class IroningMachine : public Machine {
 public:
-    bool canAddItemToQueue(Washable *item) override {
-        return m_queue.empty();
-    }
+    bool canAddItemToQueue(Washable *item) override;
 
 protected:
-    void updateHistory(Washable *item) override {
-        item->addHistoryEvent(
-                string("IRON | ") + to_string(item->getNecessaryIroningTime()) + "s | " +
-                "Ironing Machine #" + to_string(getId())
-        );
-    }
+    void updateHistory(Washable *item) override;
 };
 
 #endif //LAUNDRY_IRONINGMACHINE_H

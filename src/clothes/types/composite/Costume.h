@@ -16,21 +16,11 @@ public:
             double shirtMinWashingTemperature, double shirtMaxWashingTemperature,
             double jacketWeight, bool jacketHasDarkColor,
             double jacketMinWashingTemperature, double jacketMaxWashingTemperature
-    ) : m_pants(pantsWeight, pantsHaveDarkColor, pantsMinWashingTemperature, pantsMaxWashingTemperature),
-        m_shirt(shirtWeight, shirtHasDarkColor, shirtMinWashingTemperature, shirtMaxWashingTemperature),
-        m_jacket(jacketWeight, jacketHasDarkColor, jacketMinWashingTemperature, jacketMaxWashingTemperature),
-        Washable(10, 100) // TODO - Costume nu ar trebui sa fie Washable
-    {}
+    );
 
-    double getNecessaryDetergentQuantity() const override {
-        return m_pants.getNecessaryDetergentQuantity() + m_shirt.getNecessaryDetergentQuantity() +
-               m_jacket.getNecessaryDetergentQuantity();
-    }
+    double getNecessaryDetergentQuantity() const override;
 
-    double getNecessaryIroningTime() const override {
-        return m_pants.getNecessaryIroningTime() + m_shirt.getNecessaryIroningTime() +
-               m_jacket.getNecessaryIroningTime();
-    }
+    double getNecessaryIroningTime() const override;
 
 private:
     Pants m_pants;

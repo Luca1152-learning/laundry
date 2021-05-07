@@ -5,38 +5,18 @@
 
 class WashingMachine : public Machine {
 public:
-    explicit WashingMachine(double weightCapacity, double cycleCompletionDuration, bool canWashHeavyClothes = false)
-            : m_weightCapacity(weightCapacity), m_cycleCompletionDuration(cycleCompletionDuration),
-              m_canWashHeavyClothes(canWashHeavyClothes) {
-    }
+    explicit WashingMachine(double weightCapacity, double cycleCompletionDuration, bool canWashHeavyClothes = false);
 
-    bool canAddItemToQueue(Washable *item) override {
-        auto clothingItem = dynamic_cast<Clothing *>(item);
-        return getQueueWeight() + clothingItem->getWeight() <= m_weightCapacity;
-    }
+    bool canAddItemToQueue(Washable *item) override;
 
-    bool isAtLeastHalfFull() const {
-        return getQueueWeight() >= (m_weightCapacity / 2);
-    }
+    bool isAtLeastHalfFull() const;
+
+    bool canWashHeavyClothes() const;
+
+    double getWeightCapacity() const;
 
 protected:
-    void updateHistory(Washable *item) override {
-        item->addHistoryEvent(
-                "WASH | " + to_string(m_cycleCompletionDuration) + "s | " +
-                to_string(item->getNecessaryDetergentQuantity()) + "g detergent used | " +
-                "Washing Machine #" + to_string(getId())
-        );
-    }
-
-public:
-
-    bool canWashHeavyClothes() const {
-        return m_canWashHeavyClothes;
-    }
-
-    double getWeightCapacity() const {
-        return m_weightCapacity;
-    }
+    void updateHistory(Washable *item) override;
 
 private:
     const double m_weightCapacity, m_cycleCompletionDuration;

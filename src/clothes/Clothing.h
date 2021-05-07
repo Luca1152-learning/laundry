@@ -5,16 +5,11 @@
 
 class Clothing {
 public:
-    Clothing(double weight, bool hasDarkColor, bool isHeavy) :
-            m_weight(weight), m_hasDarkColor(hasDarkColor), m_isHeavy(isHeavy), m_id(++lastId) {}
+    Clothing(double weight, bool hasDarkColor, bool isHeavy);
 
-    double getWeight() const {
-        return m_weight;
-    }
+    double getWeight() const;
 
-    bool hasDarkColor() const {
-        return m_hasDarkColor;
-    }
+    bool hasDarkColor() const;
 
     virtual ~Clothing() = default;
 

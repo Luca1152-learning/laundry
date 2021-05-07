@@ -15,31 +15,19 @@ public:
     explicit Washable(
             double minWashingTemperature, double maxWashingTemperature,
             bool mustBeWringed = true, bool mustBeIroned = true
-    ) : m_minWashingTemperature(minWashingTemperature), m_maxWashingTemperature(maxWashingTemperature),
-        m_mustBeWringed(mustBeWringed), m_mustBeIroned(mustBeIroned) {}
+    );
 
     virtual double getNecessaryDetergentQuantity() const = 0;
 
-    virtual double getNecessaryIroningTime() const {
-        // The default for this function - is overridden in some subclasses
-        throw runtime_error("This clothing type can't be ironed.");
-    };
+    virtual double getNecessaryIroningTime() const;
 
-    void addHistoryEvent(const string &historyEvent) {
-        m_history.addHistoryEvent(historyEvent);
-    }
+    void addHistoryEvent(const string &historyEvent);
 
-    void printHistory() {
-        m_history.printHistory();
-    }
+    void printHistory();
 
-    bool mustBeWringed() {
-        return m_mustBeWringed;
-    }
+    bool mustBeWringed() const;
 
-    bool mustBeIroned() {
-        return m_mustBeIroned;
-    }
+    bool mustBeIroned() const;
 
     virtual ~Washable() = default;
 

@@ -9,20 +9,7 @@ using namespace std;
 
 class IOUtils {
 public:
-    static int promptNumberedChoice(const string &prompt, const vector<string> &choices) {
-        int choice;
-        while (true) {
-            for (int i = 0; i < choices.size(); i++) {
-                cout << "(" << i + 1 << ") " << choices[i] << "\n";
-            }
-            cout << prompt << " (1-" << choices.size() << "): ";
-            if (cin >> choice and choice >= 1 and choice <= choices.size()) {
-                return choice;
-            } else {
-                promptFail();
-            }
-        }
-    }
+    static int promptNumberedChoice(const string &prompt, const vector<string> &choices);
 
     template<class T>
     static T promptNumber(const string &prompt, T minValue = -1, T maxValue = -1) {
@@ -53,23 +40,9 @@ public:
         }
     }
 
-    static bool promptYesNo(const string &prompt) {
-        char c;
-        while (true) {
-            cout << prompt << " (y/n): ";
-            if (cin >> c and tolower(c) == 'y' or tolower(c) == 'n') {
-                return tolower(c) == 'y';
-            } else {
-                promptFail();
-            }
-        }
-    }
+    static bool promptYesNo(const string &prompt);
 
-    static void promptFail() {
-        cout << "\n[!] Please enter a valid choice!\n\n";
-        cin.clear();
-        cin.ignore(256, '\n');
-    }
+    static void promptFail();
 };
 
 #endif //LAUNDRY_IOUTILS_H

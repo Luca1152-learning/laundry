@@ -9,17 +9,9 @@ using namespace std;
 
 class WashingHistory {
 public:
-    void addHistoryEvent(const string &historyEvent) {
-        m_historyEvents.push_back(historyEvent);
-    }
+    void addHistoryEvent(const string &historyEvent);
 
-    void printHistory() {
-        cout << "-----\n";
-        for (auto &it: m_historyEvents) {
-            cout << it << "\n";
-        }
-        cout << "-----\n";
-    }
+    void printHistory();
 
 private:
     vector<string> m_historyEvents;

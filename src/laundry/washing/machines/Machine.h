@@ -9,24 +9,13 @@ using namespace std;
 
 class Machine {
 public:
-    explicit Machine() : m_id(++lastId) {}
+    explicit Machine();
 
-    void queueItem(Washable *item) {
-        if (canAddItemToQueue(item)) {
-            m_queue.push_back(item);
-        } else {
-            throw runtime_error("The given item can't be added to the queue.");
-        }
-    }
+    void queueItem(Washable *item);
 
     virtual bool canAddItemToQueue(Washable *item) = 0;
 
-    void run() {
-        for (auto &item: m_queue) {
-            updateHistory(item);
-        }
-        m_queue.clear();
-    }
+    void run();
 
     virtual ~Machine() = default;
 
@@ -36,18 +25,9 @@ protected:
 
     virtual void updateHistory(Washable *item) = 0;
 
-    double getQueueWeight() const {
-        double weight = 0;
-        for (auto &it: m_queue) {
-            auto clothingItem = dynamic_cast<Clothing *>(it);
-            weight += clothingItem->getWeight();
-        }
-        return weight;
-    }
+    double getQueueWeight() const;
 
-    int getId() const {
-        return m_id;
-    }
+    int getId() const;
 
 private:
     static int lastId;

@@ -6,15 +6,9 @@
 
 class Coat : public Clothing, public Washable {
 public:
-    explicit Coat(double weight, bool hasDarkColor, double minWashingTemperature, double maxWashingTemperature)
-            : Clothing(weight, hasDarkColor, true),
-              Washable(minWashingTemperature, maxWashingTemperature, false, false) {
-    }
+    explicit Coat(double weight, bool hasDarkColor, double minWashingTemperature, double maxWashingTemperature);
 
-    double getNecessaryDetergentQuantity() const override {
-        // 100g/kg As per the requirements
-        return 100 * getWeight();
-    }
+    double getNecessaryDetergentQuantity() const override;
 };
 
 #endif //LAUNDRY_COAT_H

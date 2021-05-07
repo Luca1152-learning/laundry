@@ -5,25 +5,14 @@
 
 class DryingMachine : public Machine {
 public:
-    explicit DryingMachine(int itemsCapacity, double cycleCompletionDuration)
-            : m_itemsCapacity(itemsCapacity), m_cycleCompletionDuration(cycleCompletionDuration) {
-    }
+    explicit DryingMachine(int itemsCapacity, double cycleCompletionDuration);
 
-    bool canAddItemToQueue(Washable *item) override {
-        return m_queue.size() != m_itemsCapacity;
-    }
+    bool canAddItemToQueue(Washable *item) override;
 
-    bool isAtLeastHalfFull() const {
-        return m_queue.size() >= (m_itemsCapacity / 2);
-    }
+    bool isAtLeastHalfFull() const;
 
 protected:
-    void updateHistory(Washable *item) override {
-        item->addHistoryEvent(
-                "DRY | " + to_string(m_cycleCompletionDuration) + "s | " +
-                "Drying Machine #" + to_string(getId())
-        );
-    }
+    void updateHistory(Washable *item) override;
 
 private:
     const int m_itemsCapacity;

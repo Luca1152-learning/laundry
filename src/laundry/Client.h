@@ -10,34 +10,22 @@ using namespace std;
 
 class Client {
 public:
-    explicit Client() : m_id(++lastId) {}
+    explicit Client();
 
-    int getId() const {
-        return m_id;
-    }
+    int getId() const;
 
     void addClothingItem(
             ClothingType clothingType, double weight, bool hasDarkColor,
             double minWashingTemperature, double maxWashingTemperature
-    ) {
-        m_clothes.push_back(WashableUtils::makeClothingItem(
-                clothingType, weight, hasDarkColor, minWashingTemperature, maxWashingTemperature
-        ));
-    }
+    );
 
     void addClothingItems(
             ClothingType clothingType, double weight, bool hasDarkColor,
             double minWashingTemperature, double maxWashingTemperature,
             int itemsCount
-    ) {
-        for (int i = 0; i < itemsCount; i++) {
-            addClothingItem(clothingType, weight, hasDarkColor, minWashingTemperature, maxWashingTemperature);
-        }
-    }
+    );
 
-    const vector<Washable *> &getClothingItems() const {
-        return m_clothes;
-    }
+    const vector<Washable *> &getClothingItems() const;
 
 private:
     const int m_id;

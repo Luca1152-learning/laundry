@@ -6,25 +6,14 @@
 // Masina de stors haine
 class WringerMachine : public Machine {
 public:
-    explicit WringerMachine(double weightCapacity, double cycleCompletionDuration)
-            : m_weightCapacity(weightCapacity), m_cycleCompletionDuration(cycleCompletionDuration) {}
+    explicit WringerMachine(double weightCapacity, double cycleCompletionDuration);
 
-    bool canAddItemToQueue(Washable *item) override {
-        auto clothingItem = dynamic_cast<Clothing *>(item);
-        return getQueueWeight() + clothingItem->getWeight() <= m_weightCapacity;
-    }
+    bool canAddItemToQueue(Washable *item) override;
 
-    bool isAtLeastHalfFull() const {
-        return getQueueWeight() >= (m_weightCapacity / 2);
-    }
+    bool isAtLeastHalfFull() const;
 
 protected:
-    void updateHistory(Washable *item) override {
-        item->addHistoryEvent(
-                "WRING | " + to_string(m_cycleCompletionDuration) + "s | " +
-                "Wringer Machine #" + to_string(getId())
-        );
-    }
+    void updateHistory(Washable *item) override;
 
 private:
     const double m_weightCapacity, m_cycleCompletionDuration;

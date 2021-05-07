@@ -6,17 +6,11 @@
 
 class Pants : public Clothing, public Washable {
 public:
-    explicit Pants(double weight, bool hasDarkColor, double minWashingTemperature, double maxWashingTemperature)
-            : Clothing(weight, hasDarkColor, false), Washable(minWashingTemperature, maxWashingTemperature) {}
+    explicit Pants(double weight, bool hasDarkColor, double minWashingTemperature, double maxWashingTemperature);
 
-    double getNecessaryDetergentQuantity() const override {
-        return (hasDarkColor()) ? 2 * Washable::STANDARD_DETERGENT_QUANTITY : Washable::STANDARD_DETERGENT_QUANTITY;
-    }
+    double getNecessaryDetergentQuantity() const override;
 
-    double getNecessaryIroningTime() const override {
-        // 90s/kg, as per the requirements
-        return 90 * getWeight();
-    }
+    double getNecessaryIroningTime() const override;
 };
 
 #endif //LAUNDRY_PANTS_H
