@@ -31,7 +31,13 @@ public:
 
     bool didCompleteWashingCircuit() const;
 
-    void markWashingCircuitAsCompleted();
+    void markAsWashed();
+
+    void markAsWringed();
+
+    void markAsDried();
+
+    void markAsIroned();
 
     virtual ~Washable() = default;
 
@@ -42,7 +48,7 @@ protected:
 private:
     const double m_minWashingTemperature, m_maxWashingTemperature;
     const bool m_mustBeWringed, m_mustBeIroned;
-    bool m_didCompleteWashingCircuit = false;
+    bool m_wasWashed = false, m_wasWringed = false, m_wasDried = false, m_wasIroned = false;
 };
 
 #endif //LAUNDRY_WASHABLE_H

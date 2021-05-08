@@ -18,6 +18,20 @@ bool MainLoop::promptCommand() {
         }
     }
 
+    int uncompletedClientOrders = m_laundry.getClients().size() - m_oldClients.size();
+    bool areUncompletedOrders = uncompletedClientOrders > 0;
+    if (uncompletedClientOrders) {
+        if (uncompletedClientOrders == 1) {
+            choices.emplace_back(
+                    "Force run all machines (" + to_string(uncompletedClientOrders) + " uncompleted client order)"
+            );
+        } else {
+            choices.emplace_back(
+                    "Force run all machines (" + to_string(uncompletedClientOrders) + " uncompleted client orders)"
+            );
+        }
+    }
+
     choices.emplace_back("Exit program");
 
     int commandChoice = IOUtils::promptNumberedChoice("Operation to perform", choices);
@@ -29,15 +43,19 @@ bool MainLoop::promptCommand() {
         cout << "\n";
 
         m_laundry.addClient(client);
-        m_laundry.runMachines(false);
-        printCompletedClientOrders();
-        cout << "\n";
+        m_laundry.runMachines(true);
+        updateCompletedClientOrdersAndPrint();
 
         return true;
     } else if (laundryHasClients and commandChoice == 2) {
         promptViewClientsClothesHistory();
         return true;
-    } else if (commandChoice == 2 + laundryHasClients) {
+    } else if (areUncompletedOrders and commandChoice == 2 + laundryHasClients) {
+        m_laundry.runMachines(false);
+        cout << "\n[!] Force run all machines.\n\n";
+        updateCompletedClientOrdersAndPrint();
+        return true;
+    } else if (commandChoice == 2 + laundryHasClients + uncompletedClientOrders) {
         return false;
     } else {
         throw runtime_error("This command choice isn't being handled.");
@@ -207,16 +225,22 @@ bool MainLoop::promptViewClothesHistoryForClient(const Client &client) {
     }
 }
 
-void MainLoop::printCompletedClientOrders() {
+void MainLoop::updateCompletedClientOrdersAndPrint() {
+    bool newOrderCompleted = false;
     for (auto &client: m_laundry.getClients()) {
         // If a new client's clothes were all completely washed
         if (find(m_oldClients.begin(), m_oldClients.end(), client) == m_oldClients.end() and
             client.didAllClothesCompleteWashingCircuit()) {
             cout << "[!] Client #" << client.getId() << "'s order was completed.\n"
                  << "[!] Detergent used: " << client.getClothesTotalDetergentUsed() << "g. "
-                 << "[!] Clothes' total time spent in machines: " << client.getClothesTotalTimeSpentInMachines()
+                 << "Clothes' total time spent in machines: " << client.getClothesTotalTimeSpentInMachines()
                  << " minutes\n";
             m_oldClients.push_back(client);
+            newOrderCompleted = true;
         }
+    }
+
+    if (newOrderCompleted) {
+        cout << "\n";
     }
 }

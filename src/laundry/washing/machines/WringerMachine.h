@@ -8,6 +8,8 @@
 // Masina de stors haine
 class WringerMachine : public Machine {
 public:
+    void run() override;
+
     explicit WringerMachine(double weightCapacity, double cycleCompletionDuration);
 
     bool canAddItemToQueue(Washable *item) override;
@@ -17,7 +19,6 @@ public:
 protected:
     int getId() const override;
 
-protected:
     void updateHistory(Washable *item) override;
 
 private:

@@ -13,7 +13,7 @@ public:
 
     virtual bool canAddItemToQueue(Washable *item) = 0;
 
-    void run();
+    virtual void run();
 
     virtual ~Machine() = default;
 

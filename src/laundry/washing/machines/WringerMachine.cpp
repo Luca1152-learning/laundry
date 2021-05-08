@@ -13,6 +13,13 @@ bool WringerMachine::isAtLeastHalfFull() const {
     return getQueueWeight() >= (m_weightCapacity / 2);
 }
 
+void WringerMachine::run() {
+    for (auto &item: m_queue) {
+        item->markAsWringed();
+    }
+    Machine::run();
+}
+
 // Protected
 void WringerMachine::updateHistory(Washable *item) {
     stringstream cycleCompletionDurationSS;

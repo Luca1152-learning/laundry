@@ -7,16 +7,15 @@
 
 class IroningMachine : public Machine {
 public:
+    void run() override;
+
     explicit IroningMachine();
-
-protected:
-    int getId() const override;
-
-public:
 
     bool canAddItemToQueue(Washable *item) override;
 
 protected:
+    int getId() const override;
+
     void updateHistory(Washable *item) override;
 
 private:

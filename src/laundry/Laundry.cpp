@@ -62,7 +62,7 @@ void Laundry::addMachines() {
 void Laundry::runWashingMachines(bool onlyIfHalfFull) {
     while (true) {
         bool didQueueItems = queueWashingMachines();
-        if (didQueueItems) {
+        if (didQueueItems or not onlyIfHalfFull) {
             bool didRunMachines = startWashingMachines(onlyIfHalfFull);
             if (not didRunMachines) {
                 break;
@@ -84,7 +84,7 @@ bool Laundry::queueWashingMachines() {
         bool didQueueItem = false;
 
         for (auto &machine: m_washingMachines) {
-            // Don't wash light color clothes and dark color clothes toghether
+            // Don't wash light color clothes and dark color clothes together
             if ((topClothingItem->hasDarkColor() and machine.hasLightColoredClothesInQueue())
                 or (not topClothingItem->hasDarkColor() and machine.hasDarkColoredClothesInQueue())) {
                 continue;
@@ -97,9 +97,19 @@ bool Laundry::queueWashingMachines() {
             if (not topClothingItem->isHeavy() and machine.canWashHeavyClothes()) {
                 continue;
             }
+            // Don't wash clothes in inappropriate temperatures
+            if (machine.isTemperatureSet() and (topItem->getMinWashingTemperature() > machine.getTemperature() or
+                                                topItem->getMaxWashingTemperature() < machine.getTemperature())) {
+                continue;
+            }
 
             if (machine.canAddItemToQueue(topItem)) {
                 machine.queueItem(topItem);
+                if (not machine.isTemperatureSet()) {
+                    machine.setTemperature(
+                            (topItem->getMinWashingTemperature() + topItem->getMaxWashingTemperature()) / 2.0
+                    );
+                }
 
                 // Queue the next step
                 if (topItem->mustBeWringed()) {
@@ -137,7 +147,7 @@ bool Laundry::startWashingMachines(bool onlyIfHalfFull) {
             }
         } else {
             machine.run();
-            didRunMachines = true;
+            didRunMachines = false;
         }
     }
     return didRunMachines;
@@ -147,7 +157,7 @@ bool Laundry::startWashingMachines(bool onlyIfHalfFull) {
 void Laundry::runWringerMachines(bool onlyIfHalfFull) {
     while (true) {
         bool didQueueItems = queueWringerMachines();
-        if (didQueueItems) {
+        if (didQueueItems or not onlyIfHalfFull) {
             bool didRunMachines = startWringerMachines(onlyIfHalfFull);
             if (not didRunMachines) {
                 break;
@@ -182,7 +192,7 @@ bool Laundry::startWringerMachines(bool onlyIfHalfFull) {
             }
         } else {
             machine.run();
-            didRunMachines = true;
+            didRunMachines = false;
         }
     }
     return didRunMachines;
@@ -192,7 +202,7 @@ bool Laundry::startWringerMachines(bool onlyIfHalfFull) {
 void Laundry::runDryingMachines(bool onlyIfHalfFull) {
     while (true) {
         bool didQueueItems = queueDryingMachines();
-        if (didQueueItems) {
+        if (didQueueItems or not onlyIfHalfFull) {
             bool didRunMachines = startDryingMachines(onlyIfHalfFull);
             if (not didRunMachines) {
                 break;
@@ -215,8 +225,6 @@ bool Laundry::queueDryingMachines() {
             // Queue the next step
             if (item->mustBeIroned()) {
                 m_ironingQueue.push(item);
-            } else {
-                item->markWashingCircuitAsCompleted();
             }
             m_dryingQueue.pop();
 
@@ -236,7 +244,7 @@ bool Laundry::startDryingMachines(bool onlyIfHalfFull) {
             }
         } else {
             machine.run();
-            didRunMachines = true;
+            didRunMachines = false;
         }
     }
     return didRunMachines;
@@ -261,7 +269,6 @@ bool Laundry::queueIroningMachines() {
             Washable *item = m_ironingQueue.front();
 
             machine.queueItem(item);
-            item->markWashingCircuitAsCompleted();
             m_ironingQueue.pop();
 
             didQueueItems = true;

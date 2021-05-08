@@ -9,6 +9,8 @@ class DryingMachine : public Machine {
 public:
     explicit DryingMachine(int itemsCapacity, double cycleCompletionDuration);
 
+    void run() override;
+
     bool canAddItemToQueue(Washable *item) override;
 
     bool isAtLeastHalfFull() const;

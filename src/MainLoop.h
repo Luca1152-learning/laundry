@@ -41,7 +41,7 @@ private:
     bool promptViewClothesHistoryForClient(const Client &client);
 
     // Stats
-    void printCompletedClientOrders();
+    void updateCompletedClientOrdersAndPrint();
 };
 
 #endif //LAUNDRY_MAINLOOP_H

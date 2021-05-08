@@ -4,6 +4,15 @@
 DryingMachine::DryingMachine(int itemsCapacity, double cycleCompletionDuration)
         : m_itemsCapacity(itemsCapacity), m_cycleCompletionDuration(cycleCompletionDuration), m_id(++lastId) {}
 
+
+void DryingMachine::run() {
+    for (auto &item: m_queue) {
+        item->markAsDried();
+    }
+    Machine::run();
+}
+
+
 bool DryingMachine::canAddItemToQueue(Washable *item) {
     return m_queue.size() != m_itemsCapacity;
 }

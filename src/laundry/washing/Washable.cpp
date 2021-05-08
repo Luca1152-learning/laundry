@@ -27,13 +27,53 @@ double Washable::getMaxWashingTemperature() const {
 }
 
 bool Washable::didCompleteWashingCircuit() const {
-    return m_didCompleteWashingCircuit;
-}
-
-void Washable::markWashingCircuitAsCompleted() {
-    if (m_didCompleteWashingCircuit) {
-        throw runtime_error("The washing circuit was already marked as completed. That's unexpected.");
+    if (not m_wasWashed) {
+        return false;
     }
 
-    m_didCompleteWashingCircuit = true;
+    if (not m_wasWringed and m_mustBeWringed) {
+        return false;
+    }
+
+    if (not m_wasDried) {
+        return false;
+    }
+
+    if (not m_wasIroned and m_mustBeIroned) {
+        return false;
+    }
+
+    return true;
+}
+
+void Washable::markAsWashed() {
+    if (m_wasWashed) {
+        throw runtime_error("This item was already marked as having been washed. That's unexpected.");
+    }
+
+    m_wasWashed = true;
+}
+
+void Washable::markAsWringed() {
+    if (m_wasWringed) {
+        throw runtime_error("This item was already marked as having been wringed. That's unexpected.");
+    }
+
+    m_wasWringed = true;
+}
+
+void Washable::markAsDried() {
+    if (m_wasDried) {
+        throw runtime_error("This item was already marked as having been dried. That's unexpected.");
+    }
+
+    m_wasDried = true;
+}
+
+void Washable::markAsIroned() {
+    if (m_wasIroned) {
+        throw runtime_error("This item was already marked as having been ironed. That's unexpected.");
+    }
+
+    m_wasIroned = true;
 }

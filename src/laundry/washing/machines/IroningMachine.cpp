@@ -1,6 +1,13 @@
 #include "IroningMachine.h"
 
 // Public
+void IroningMachine::run() {
+    for (auto &item: m_queue) {
+        item->markAsIroned();
+    }
+    Machine::run();
+}
+
 bool IroningMachine::canAddItemToQueue(Washable *item) {
     return m_queue.empty();
 }
