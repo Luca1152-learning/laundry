@@ -1,19 +1,19 @@
 #include "WashableUtils.h"
 
-Washable *WashableUtils::makeClothingItem(ClothingType clothingType, double weight, bool hasDarkColor,
-                                          double minWashingTemperature, double maxWashingTemperature) {
+Washable *WashableUtils::makeClothingItem(
+        ClothingType clothingType, double weight, bool hasDarkColor,
+        double minWashingTemperature, double maxWashingTemperature, bool isSuitPiece
+) {
     switch (clothingType) {
         case ClothingType::COAT:return new Coat(weight, hasDarkColor, minWashingTemperature, maxWashingTemperature);
-        case ClothingType::COSTUME:
             // TODO
-            return new Costume(
-                    weight, hasDarkColor, minWashingTemperature, maxWashingTemperature,
-                    weight, hasDarkColor, minWashingTemperature, maxWashingTemperature,
-                    weight, hasDarkColor, minWashingTemperature, maxWashingTemperature
-            );
+        case ClothingType::SUIT:
+            return new Pants(weight, hasDarkColor, minWashingTemperature, maxWashingTemperature, isSuitPiece);
         case ClothingType::DRESS:return new Dress(weight, hasDarkColor, minWashingTemperature, maxWashingTemperature);
-        case ClothingType::JACKET:return new Jacket(weight, hasDarkColor, minWashingTemperature, maxWashingTemperature);
-        case ClothingType::PANTS:return new Pants(weight, hasDarkColor, minWashingTemperature, maxWashingTemperature);
+        case ClothingType::JACKET:
+            return new Jacket(weight, hasDarkColor, minWashingTemperature, maxWashingTemperature, isSuitPiece);
+        case ClothingType::PANTS:
+            return new Pants(weight, hasDarkColor, minWashingTemperature, maxWashingTemperature, isSuitPiece);
         case ClothingType::SHIRT:return new Shirt(weight, hasDarkColor, minWashingTemperature, maxWashingTemperature);
         case ClothingType::WINDBREAKER:
             return new Windbreaker(weight, hasDarkColor, minWashingTemperature, maxWashingTemperature);
@@ -40,4 +40,17 @@ ClothingType WashableUtils::getClothingType(Washable *washable) {
     if (windbreaker) return ClothingType::WINDBREAKER;
 
     throw runtime_error("Couldn't determine the Washable*'s clothing type.");
+}
+
+bool WashableUtils::isSuitPiece(Washable *washable) {
+    auto jacket = dynamic_cast<Jacket *>(washable);
+    if (jacket and jacket->isSuitPiece()) return true;
+
+    auto shirt = dynamic_cast<Shirt *>(washable);
+    if (shirt and shirt->isSuitPiece()) return true;
+
+    auto pants = dynamic_cast<Pants *>(washable);
+    if (pants and pants->isSuitPiece()) return true;
+
+    return false;
 }

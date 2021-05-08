@@ -35,6 +35,8 @@ private:
 
     static pair<double, double> promptWashingTemperatureRange(int itemsCount);
 
+    static void promptAddSuitPieceToClient(Client &client);
+
     // View history
     void promptViewClientsClothesHistory();
 

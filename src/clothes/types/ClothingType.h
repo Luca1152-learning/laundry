@@ -7,7 +7,7 @@ using namespace std;
 
 enum class ClothingType {
     COAT,
-    COSTUME,
+    SUIT,
     DRESS,
     JACKET,
     PANTS,

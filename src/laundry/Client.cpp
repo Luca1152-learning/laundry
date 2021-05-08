@@ -9,16 +9,16 @@ int Client::getId() const {
 
 void Client::addClothingItem(
         ClothingType clothingType, double weight, bool hasDarkColor,
-        double minWashingTemperature, double maxWashingTemperature) {
+        double minWashingTemperature, double maxWashingTemperature, bool isSuitPiece) {
     m_clothes.push_back(WashableUtils::makeClothingItem(
-            clothingType, weight, hasDarkColor, minWashingTemperature, maxWashingTemperature
+            clothingType, weight, hasDarkColor, minWashingTemperature, maxWashingTemperature, isSuitPiece
     ));
 }
 
 void Client::addClothingItems(ClothingType clothingType, double weight, bool hasDarkColor, double minWashingTemperature,
-                              double maxWashingTemperature, int itemsCount) {
+                              double maxWashingTemperature, int itemsCount, bool isSuitPiece) {
     for (int i = 0; i < itemsCount; i++) {
-        addClothingItem(clothingType, weight, hasDarkColor, minWashingTemperature, maxWashingTemperature);
+        addClothingItem(clothingType, weight, hasDarkColor, minWashingTemperature, maxWashingTemperature, isSuitPiece);
     }
 }
 

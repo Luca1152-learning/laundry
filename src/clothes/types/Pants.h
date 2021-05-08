@@ -6,11 +6,20 @@
 
 class Pants : public Clothing, public Washable {
 public:
-    explicit Pants(double weight, bool hasDarkColor, double minWashingTemperature, double maxWashingTemperature);
+    explicit Pants(
+            double weight, bool hasDarkColor,
+            double minWashingTemperature, double maxWashingTemperature,
+            bool isSuitPiece = false
+    );
 
     double getNecessaryDetergentQuantity() const override;
 
     double getNecessaryIroningTime() const override;
+
+    bool isSuitPiece() const;
+
+private:
+    const bool m_isSuitPiece;
 };
 
 #endif //LAUNDRY_PANTS_H

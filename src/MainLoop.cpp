@@ -82,6 +82,13 @@ bool MainLoop::promptClientOrder(Client &client) {
 void MainLoop::promptAddClothingItemToClient(Client &client) {
     ClothingType clothingType = promptClothingType();
     cout << "\n";
+
+    // Handle suits
+    if (clothingType == ClothingType::SUIT) {
+        promptAddSuitPieceToClient(client);
+        return;
+    }
+
     int itemsCount = promptItemsCount();
     double weight = promptWeight(itemsCount);
     bool hasDarkColor = promptHasDarkColor(itemsCount);
@@ -98,15 +105,15 @@ ClothingType MainLoop::promptClothingType() {
     cout << "\n";
     int clothingChoice = IOUtils::promptNumberedChoice(
             "Clothing type to add",
-            {"Coat", "Costume", "Dress", "Jacket", "Pants", "Shirt", "Windbreaker"}
+            {"Coat", "Dress", "Jacket", "Pants", "Shirt", "Suit", "Windbreaker"}
     );
 
     if (clothingChoice == 1) return ClothingType::COAT;
-    else if (clothingChoice == 2) return ClothingType::COSTUME;
-    else if (clothingChoice == 3) return ClothingType::DRESS;
-    else if (clothingChoice == 4) return ClothingType::JACKET;
-    else if (clothingChoice == 5) return ClothingType::PANTS;
-    else if (clothingChoice == 6) return ClothingType::SHIRT;
+    else if (clothingChoice == 2) return ClothingType::DRESS;
+    else if (clothingChoice == 3) return ClothingType::JACKET;
+    else if (clothingChoice == 4) return ClothingType::PANTS;
+    else if (clothingChoice == 5) return ClothingType::SHIRT;
+    else if (clothingChoice == 6) return ClothingType::SUIT;
     else if (clothingChoice == 7) return ClothingType::WINDBREAKER;
     else throw runtime_error("This clothing type isn't being handled.");
 }
@@ -148,6 +155,58 @@ pair<double, double> MainLoop::promptWashingTemperatureRange(int itemsCount) {
     }
 
     return {minTemp, maxTemp};
+}
+
+void MainLoop::promptAddSuitPieceToClient(Client &client) {
+    // Suits count
+    int itemsCount = promptItemsCount();
+
+    // Shirt info
+    cout << "\n";
+    if (itemsCount == 1) {
+        cout << "[!] Enter the shirt's info.\n";
+    } else {
+        cout << "[!] Enter the shirts' info.\n";
+    }
+    double shirtWeight = promptWeight(itemsCount);
+    bool shirtHasDarkColor = promptHasDarkColor(itemsCount);
+    double shirtMinWashingTemperature, shirtMaxWashingTemperature;
+    tie(shirtMinWashingTemperature, shirtMaxWashingTemperature) = promptWashingTemperatureRange(itemsCount);
+    cout << "\n";
+
+    // Jacket info
+    if (itemsCount == 1) {
+        cout << "[!] Enter the jacket's info.\n";
+    } else {
+        cout << "[!] Enter the jackets' info.\n";
+    }
+    double jacketWeight = promptWeight(itemsCount);
+    bool jacketHasDarkColor = promptHasDarkColor(itemsCount);
+    double jacketMinWashingTemperature, jacketMaxWashingTemperature;
+    tie(jacketMinWashingTemperature, jacketMaxWashingTemperature) = promptWashingTemperatureRange(itemsCount);
+    cout << "\n";
+
+    // Pants info
+    cout << "[!] Enter the pants' info.\n";
+    double pantsWeight = promptWeight(itemsCount);
+    bool pantsHaveDarkColor = promptHasDarkColor(itemsCount);
+    double pantsMinWashingTemperature, pantsMaxWashingTemperature;
+    tie(pantsMinWashingTemperature, pantsMaxWashingTemperature) = promptWashingTemperatureRange(itemsCount);
+    cout << "\n";
+
+    // Add the items
+    client.addClothingItems(
+            ClothingType::SHIRT, shirtWeight, shirtHasDarkColor,
+            shirtMinWashingTemperature, shirtMaxWashingTemperature, itemsCount, true
+    );
+    client.addClothingItems(
+            ClothingType::JACKET, jacketWeight, jacketHasDarkColor,
+            jacketMinWashingTemperature, jacketMaxWashingTemperature, itemsCount, true
+    );
+    client.addClothingItems(
+            ClothingType::PANTS, pantsWeight, pantsHaveDarkColor,
+            pantsMinWashingTemperature, pantsMaxWashingTemperature, itemsCount, true
+    );
 }
 
 void MainLoop::promptViewClientsClothesHistory() {
@@ -229,12 +288,16 @@ void MainLoop::updateCompletedClientOrdersAndPrint() {
     bool newOrderCompleted = false;
     for (auto &client: m_laundry.getClients()) {
         // If a new client's clothes were all completely washed
+
+        double usedMachineTime = client.getClothesTotalTimeSpentInMachines() / client.getClothingItems().size();
+        stringstream usedMachineTimeSS;
+        usedMachineTimeSS << fixed << setprecision(1) << usedMachineTime;
+
         if (find(m_oldClients.begin(), m_oldClients.end(), client) == m_oldClients.end() and
             client.didAllClothesCompleteWashingCircuit()) {
             cout << "[!] Client #" << client.getId() << "'s order was completed.\n"
                  << "[!] Detergent used: " << client.getClothesTotalDetergentUsed() << "g. "
-                 << "Clothes' total time spent in machines: " << client.getClothesTotalTimeSpentInMachines()
-                 << " minutes\n";
+                 << "Used machine time: " << usedMachineTimeSS.str() << " minutes\n";
             m_oldClients.push_back(client);
             newOrderCompleted = true;
         }

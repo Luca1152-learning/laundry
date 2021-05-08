@@ -94,7 +94,12 @@ bool Laundry::queueWashingMachines() {
                 continue;
             }
             // Don't wash non-heavy clothes in special washing machines (as to be more efficient)
-            if (not topClothingItem->isHeavy() and machine.canWashHeavyClothes()) {
+            if ((not topClothingItem->isHeavy() and not WashableUtils::isSuitPiece(topItem)) and
+                machine.canWashHeavyClothes()) {
+                continue;
+            }
+            // Don't wash suit pieces in non-special washing machines
+            if (WashableUtils::isSuitPiece(topItem) and not machine.canWashHeavyClothes()) {
                 continue;
             }
             // Don't wash clothes in inappropriate temperatures

@@ -7,7 +7,6 @@
 #include "../laundry/washing/Washable.h"
 #include "../clothes/types/ClothingType.h"
 #include "../clothes/types/Coat.h"
-#include "../clothes/types/composite/Costume.h"
 #include "../clothes/types/Dress.h"
 #include "../clothes/types/Jacket.h"
 #include "../clothes/types/Pants.h"

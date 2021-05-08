@@ -16,13 +16,14 @@ public:
 
     void addClothingItem(
             ClothingType clothingType, double weight, bool hasDarkColor,
-            double minWashingTemperature, double maxWashingTemperature
+            double minWashingTemperature, double maxWashingTemperature,
+            bool isSuitPiece = false
     );
 
     void addClothingItems(
             ClothingType clothingType, double weight, bool hasDarkColor,
             double minWashingTemperature, double maxWashingTemperature,
-            int itemsCount
+            int itemsCount, bool isSuitPiece = false
     );
 
     const vector<Washable *> &getClothingItems() const;

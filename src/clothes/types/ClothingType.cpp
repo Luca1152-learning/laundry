@@ -3,7 +3,7 @@
 string ClothingTypeUtils::toString(ClothingType clothingType) {
     switch (clothingType) {
         case ClothingType::COAT: return "Coat";
-        case ClothingType::COSTUME: return "Costume";
+        case ClothingType::SUIT: return "Suit";
         case ClothingType::DRESS: return "Dress";
         case ClothingType::JACKET: return "Jacket";
         case ClothingType::PANTS: return "Pants";
