@@ -33,11 +33,19 @@ public:
 
     void markAsWashed();
 
+    bool wasWashed() const;
+
     void markAsWringed();
+
+    bool wasWringed() const;
 
     void markAsDried();
 
+    bool wasDried() const;
+
     void markAsIroned();
+
+    bool wasIroned() const;
 
     virtual ~Washable() = default;
 

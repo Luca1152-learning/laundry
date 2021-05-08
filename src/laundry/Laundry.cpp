@@ -175,14 +175,35 @@ void Laundry::runWringerMachines(bool onlyIfHalfFull) {
 
 bool Laundry::queueWringerMachines() {
     bool didQueueItems = false;
-    for (auto &machine: m_wringerMachines) {
-        while (not m_wringingQueue.empty() and machine.canAddItemToQueue(m_wringingQueue.front())) {
-            machine.queueItem(m_wringingQueue.front());
-            m_dryingQueue.push(m_wringingQueue.front());
-            m_wringingQueue.pop();
+    int itemsToQueue = m_wringingQueue.size();
 
-            didQueueItems = true;
+    while (itemsToQueue) {
+        Washable *topItem = m_wringingQueue.front();
+
+        bool didQueueItem = false;
+        if (topItem->wasWashed()) {
+            for (auto &machine: m_wringerMachines) {
+                if (machine.canAddItemToQueue(topItem)) {
+
+                    machine.queueItem(m_wringingQueue.front());
+                    m_dryingQueue.push(m_wringingQueue.front());
+                    m_wringingQueue.pop();
+
+                    didQueueItem = true;
+                    didQueueItems = true;
+                    break;
+                }
+            }
         }
+
+        // An item couldn't be queued, which means that there was no available wringer machine
+        // or that it wasn't washed
+        if (not didQueueItem) {
+            m_wringingQueue.push(topItem);
+            m_wringingQueue.pop();
+        }
+
+        itemsToQueue--;
     }
     return didQueueItems;
 }
@@ -220,21 +241,40 @@ void Laundry::runDryingMachines(bool onlyIfHalfFull) {
 
 bool Laundry::queueDryingMachines() {
     bool didQueueItems = false;
-    for (auto &machine: m_dryingMachines) {
-        while (not m_dryingQueue.empty() and machine.canAddItemToQueue(m_dryingQueue.front())) {
-            Washable *item = m_dryingQueue.front();
+    int itemsToQueue = m_dryingQueue.size();
 
-            // Queue the machine
-            machine.queueItem(item);
+    while (itemsToQueue) {
+        Washable *topItem = m_dryingQueue.front();
 
-            // Queue the next step
-            if (item->mustBeIroned()) {
-                m_ironingQueue.push(item);
+        bool didQueueItem = false;
+        if ((topItem->mustBeWringed() and topItem->wasWringed()) or
+            (not topItem->mustBeWringed() and topItem->wasWashed())) {
+            for (auto &machine: m_dryingMachines) {
+                if (machine.canAddItemToQueue(topItem)) {
+                    // Queue the machine
+                    machine.queueItem(topItem);
+
+                    // Queue the next step
+                    if (topItem->mustBeIroned()) {
+                        m_ironingQueue.push(topItem);
+                    }
+                    m_dryingQueue.pop();
+
+                    didQueueItem = true;
+                    didQueueItems = true;
+                    break;
+                }
             }
-            m_dryingQueue.pop();
-
-            didQueueItems = true;
         }
+
+        // An item couldn't be queued, which means that there was no available drying machine
+        // or that it wasn't wringed/washed
+        if (not didQueueItem) {
+            m_dryingQueue.push(topItem);
+            m_dryingQueue.pop();
+        }
+
+        itemsToQueue--;
     }
     return didQueueItems;
 }
@@ -269,15 +309,33 @@ void Laundry::runIroningMachines() {
 
 bool Laundry::queueIroningMachines() {
     bool didQueueItems = false;
-    for (auto &machine: m_ironingMachines) {
-        while (not m_ironingQueue.empty() and machine.canAddItemToQueue(m_ironingQueue.front())) {
-            Washable *item = m_ironingQueue.front();
+    int itemsToQueue = m_ironingQueue.size();
 
-            machine.queueItem(item);
-            m_ironingQueue.pop();
+    while (itemsToQueue) {
+        Washable *topItem = m_ironingQueue.front();
 
-            didQueueItems = true;
+        bool didQueueItem = false;
+        if (topItem->wasDried()) {
+            for (auto &machine: m_ironingMachines) {
+                if (machine.canAddItemToQueue(topItem)) {
+                    machine.queueItem(topItem);
+                    m_ironingQueue.pop();
+
+                    didQueueItem = true;
+                    didQueueItems = true;
+                    break;
+                }
+            }
         }
+
+        // An item couldn't be queued, which means that there was no available drying machine
+        // or that it wasn't wringed/washed
+        if (not didQueueItem) {
+            m_ironingQueue.push(topItem);
+            m_ironingQueue.pop();
+        }
+
+        itemsToQueue--;
     }
     return didQueueItems;
 }

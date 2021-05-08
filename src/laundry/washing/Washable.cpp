@@ -77,3 +77,19 @@ void Washable::markAsIroned() {
 
     m_wasIroned = true;
 }
+
+bool Washable::wasWashed() const {
+    return m_wasWashed;
+}
+
+bool Washable::wasWringed() const {
+    return m_wasWringed;
+}
+
+bool Washable::wasDried() const {
+    return m_wasDried;
+}
+
+bool Washable::wasIroned() const {
+    return m_wasIroned;
+}
