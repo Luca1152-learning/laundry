@@ -42,6 +42,8 @@ private:
 
     bool promptViewClothesHistoryForClient(const Client &client);
 
+    static string getWashableItemDetails(Washable *item);
+
     // Stats
     void updateCompletedClientOrdersAndPrint();
 };

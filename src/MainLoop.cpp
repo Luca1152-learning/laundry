@@ -236,30 +236,7 @@ bool MainLoop::promptViewClothesHistoryForClient(const Client &client) {
     vector<Washable *> clothingItems = client.getClothingItems();
     vector<string> choices;
     for (auto &item: clothingItems) {
-        double minWashingTemperature = item->getMinWashingTemperature();
-        double maxWashingTemperature = item->getMaxWashingTemperature();
-        string clothingType = ClothingTypeUtils::toString(WashableUtils::getClothingType(item));
-
-        auto clothing = dynamic_cast<Clothing *>(item);
-        double weight = clothing->getWeight();
-        int itemId = clothing->getId();
-        bool hasDarkColor = clothing->hasDarkColor();
-
-
-        stringstream weightSS, minWashingTemperatureSS, maxWashingTemperatureSS;
-        weightSS << fixed << setprecision(1) << weight;
-        minWashingTemperatureSS << fixed << setprecision(1) << minWashingTemperature;
-        maxWashingTemperatureSS << fixed << setprecision(1) << maxWashingTemperature;
-
-        string itemChoiceString = clothingType + " (id #" + to_string(itemId) + ") | " +
-                                  weightSS.str() + " kg";
-        if (hasDarkColor) {
-            itemChoiceString += " | dark colored";
-        }
-        itemChoiceString += " | washing temperature: " + minWashingTemperatureSS.str() + "-" +
-                            maxWashingTemperatureSS.str();
-
-        choices.push_back(itemChoiceString);
+        choices.push_back(getWashableItemDetails(item));
     }
     choices.emplace_back("Exit");
 
@@ -270,6 +247,7 @@ bool MainLoop::promptViewClothesHistoryForClient(const Client &client) {
         return false;
     } else {
         cout << "\n";
+        cout << getWashableItemDetails(clothingItems[commandChoice - 1]) << "\n";
         clothingItems[commandChoice - 1]->printHistory();
         cout << "\n";
 
@@ -284,26 +262,52 @@ bool MainLoop::promptViewClothesHistoryForClient(const Client &client) {
     }
 }
 
+string MainLoop::getWashableItemDetails(Washable *item) {
+    double minWashingTemperature = item->getMinWashingTemperature();
+    double maxWashingTemperature = item->getMaxWashingTemperature();
+    string clothingType = ClothingTypeUtils::toString(WashableUtils::getClothingType(item));
+
+    auto clothing = dynamic_cast<Clothing *>(item);
+    double weight = clothing->getWeight();
+    int itemId = clothing->getId();
+    bool hasDarkColor = clothing->hasDarkColor();
+
+    stringstream weightSS, minWashingTemperatureSS, maxWashingTemperatureSS;
+    weightSS << fixed << setprecision(1) << weight;
+    minWashingTemperatureSS << fixed << setprecision(1) << minWashingTemperature;
+    maxWashingTemperatureSS << fixed << setprecision(1) << maxWashingTemperature;
+
+    string itemChoiceString = clothingType + " (id #" + to_string(itemId) + ") | " +
+                              weightSS.str() + " kg";
+    if (hasDarkColor) {
+        itemChoiceString += " | dark colored";
+    }
+    itemChoiceString += " | washing temperature: " + minWashingTemperatureSS.str() + "-" +
+                        maxWashingTemperatureSS.str();
+
+    if (WashableUtils::isSuitPiece(item)) {
+        itemChoiceString += " | suit piece";
+    }
+
+    return itemChoiceString;
+}
+
 void MainLoop::updateCompletedClientOrdersAndPrint() {
     bool newOrderCompleted = false;
     for (auto &client: m_laundry.getClients()) {
         // If a new client's clothes were all completely washed
-
-        double usedMachineTime = client.getClothesTotalTimeSpentInMachines() / client.getClothingItems().size();
-        stringstream usedMachineTimeSS;
-        usedMachineTimeSS << fixed << setprecision(1) << usedMachineTime;
-
         if (find(m_oldClients.begin(), m_oldClients.end(), client) == m_oldClients.end() and
             client.didAllClothesCompleteWashingCircuit()) {
+
+            double usedMachineTime = client.getClothesTotalTimeSpentInMachines() / client.getClothingItems().size();
+            stringstream usedMachineTimeSS;
+            usedMachineTimeSS << fixed << setprecision(1) << usedMachineTime;
+
             cout << "[!] Client #" << client.getId() << "'s order was completed.\n"
                  << "[!] Detergent used: " << client.getClothesTotalDetergentUsed() << "g. "
-                 << "Used machine time: " << usedMachineTimeSS.str() << " minutes\n";
+                 << "Used machine time: " << usedMachineTimeSS.str() << " minutes\n\n";
             m_oldClients.push_back(client);
             newOrderCompleted = true;
         }
-    }
-
-    if (newOrderCompleted) {
-        cout << "\n";
     }
 }

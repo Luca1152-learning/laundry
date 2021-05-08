@@ -6,17 +6,16 @@ Washable *WashableUtils::makeClothingItem(
 ) {
     switch (clothingType) {
         case ClothingType::COAT:return new Coat(weight, hasDarkColor, minWashingTemperature, maxWashingTemperature);
-            // TODO
-        case ClothingType::SUIT:
-            return new Pants(weight, hasDarkColor, minWashingTemperature, maxWashingTemperature, isSuitPiece);
         case ClothingType::DRESS:return new Dress(weight, hasDarkColor, minWashingTemperature, maxWashingTemperature);
         case ClothingType::JACKET:
             return new Jacket(weight, hasDarkColor, minWashingTemperature, maxWashingTemperature, isSuitPiece);
         case ClothingType::PANTS:
             return new Pants(weight, hasDarkColor, minWashingTemperature, maxWashingTemperature, isSuitPiece);
-        case ClothingType::SHIRT:return new Shirt(weight, hasDarkColor, minWashingTemperature, maxWashingTemperature);
+        case ClothingType::SHIRT:
+            return new Shirt(weight, hasDarkColor, minWashingTemperature, maxWashingTemperature, isSuitPiece);
         case ClothingType::WINDBREAKER:
             return new Windbreaker(weight, hasDarkColor, minWashingTemperature, maxWashingTemperature);
+        default: throw runtime_error("This clothing type can't be instantiated.");
     }
 }
 
